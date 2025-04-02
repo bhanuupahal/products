@@ -7,6 +7,10 @@ import Login from './Components/Login';
 import Register from './Components/Register';
 import Categories from './Components/Categories';
 import ForgotPassword from './Components/ForgotPassword';
+import WordPress from './Components/CategoriesSection/WordPress';
+import PHP from './Components/CategoriesSection/PHP';
+import HTML from './Components/CategoriesSection/HTML';
+
 
 function App() {
   return (
@@ -18,11 +22,15 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/wordpress" element={<WordPress />} />
+        <Route path="/php" element={<PHP />} />
+        <Route path="/html" element={<HTML />} />
+        
       </Routes>
+      
       <Footer />
     </div>
   );
 }
 
 export default App;
-
