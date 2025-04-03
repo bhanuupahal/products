@@ -1,22 +1,16 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import {
-  Search,
-  BookOpen,
-  Users,
-  Star,
-  Clock,
-  ChevronRight,
-  Code,
-  Database,
-  Server,
-  Shield,
-  Terminal,
-  Globe,
-  CheckCircle,
-} from "lucide-react";
+import { 
+  BarChart, Activity, TrendingUp, BarChart2, 
+  Target, Award, Search, Code, Database, Server, 
+  Globe, Shield, BookOpen, Users, Star, Clock, 
+  ChevronRight, Terminal, CheckCircle, Zap, Coffee, 
+  Brain, FileCode, Rocket, Tool, GitBranch
+} from 'lucide-react';
 const PHPPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  
+  // Enhanced course data with more details
   const phpCourses = [
     {
       id: 1,
@@ -27,15 +21,23 @@ const PHPPage = () => {
       students: 18000,
       rating: 4.8,
       price: 59.99,
-      image:
-        "https://cdn.pixabay.com/photo/2015/04/20/13/17/work-731198_1280.jpg",
+      image: "https://cdn.pixabay.com/photo/2015/04/20/13/17/work-731198_1280.jpg",
       instructor: "David Wilson",
       instructorImage: "https://randomuser.me/api/portraits/men/32.jpg",
       highlights: [
         "Database Integration",
         "REST APIs",
         "Security Best Practices",
+        "Real-world Projects",
+        "Performance Optimization"
       ],
+      topics: [
+        "Advanced MySQL Queries",
+        "API Authentication",
+        "Caching Strategies",
+        "Error Handling",
+        "Deploy to Production"
+      ]
     },
     {
       id: 2,
@@ -71,62 +73,304 @@ const PHPPage = () => {
   const filteredCourses = phpCourses.filter((course) =>
     course.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
+  const advancedStats = [
+    {
+      title: "Market Share",
+      value: "78.9%",
+      change: "+2.3%",
+      description: "Of websites use PHP",
+      icon: <BarChart className="w-6 h-6" />,
+      color: "from-blue-500 to-blue-600",
+      shadowColor: "shadow-blue-500/20",
+      metric: "Growing steadily",
+      trend: "positive"
+    },
+    {
+      title: "Job Market",
+      value: "127K+",
+      change: "+12.5%",
+      description: "Open positions worldwide",
+      icon: <TrendingUp className="w-6 h-6" />,
+      color: "from-purple-500 to-purple-600",
+      shadowColor: "shadow-purple-500/20",
+      metric: "High demand",
+      trend: "positive"
+    },
+    {
+      title: "Average Salary",
+      value: "$94K",
+      change: "+8.4%",
+      description: "Annual PHP developer salary",
+      icon: <Activity className="w-6 h-6" />,
+      color: "from-emerald-500 to-emerald-600",
+      shadowColor: "shadow-emerald-500/20",
+      metric: "Above industry average",
+      trend: "positive"
+    },
+    {
+      title: "Framework Usage",
+      value: "45.4%",
+      change: "+5.7%",
+      description: "Use modern PHP frameworks",
+      icon: <BarChart2 className="w-6 h-6" />,
+      color: "from-red-500 to-red-600",
+      shadowColor: "shadow-red-500/20",
+      metric: "Rapid adoption",
+      trend: "positive"
+    },
+    {
+      title: "Enterprise Usage",
+      value: "83%",
+      change: "+3.2%",
+      description: "Of Fortune 500 companies use PHP",
+      icon: <Target className="w-6 h-6" />,
+      color: "from-amber-500 to-amber-600",
+      shadowColor: "shadow-amber-500/20",
+      metric: "Enterprise ready",
+      trend: "positive"
+    },
+    {
+      title: "Developer Satisfaction",
+      value: "4.5/5",
+      change: "+0.3",
+      description: "Developer satisfaction score",
+      icon: <Award className="w-6 h-6" />,
+      color: "from-indigo-500 to-indigo-600",
+      shadowColor: "shadow-indigo-500/20",
+      metric: "Highly rated",
+      trend: "positive"
+    }
+  ];
+  const renderAdvancedStatsSection = () => (
+    <div className="py-20 bg-gray-900">
+      <div className="container mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          className="text-center mb-16"
+        >
+          <span className="text-blue-400 font-semibold text-sm uppercase tracking-wider">Industry Insights</span>
+          <h2 className="text-4xl font-bold mt-2 text-white">PHP by the Numbers</h2>
+          <div className="w-24 h-1 bg-blue-500 mx-auto mt-4 rounded-full"></div>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {advancedStats.map((stat, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ 
+                y: -5,
+                transition: { duration: 0.2 }
+              }}
+              transition={{ delay: index * 0.1 }}
+              className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${stat.color} ${stat.shadowColor} shadow-xl`}
+            >
+              <div className="absolute inset-0 bg-black opacity-10"></div>
+              <div className="relative p-8">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="p-3 bg-white/20 rounded-lg backdrop-blur-sm">
+                    <div className="text-white">
+                      {stat.icon}
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-1 bg-white/20 rounded-full px-3 py-1 backdrop-blur-sm">
+                    <span className="text-white text-sm">{stat.change}</span>
+                    <motion.div
+                      animate={{ y: [0, -5, 0] }}
+                      transition={{ duration: 1, repeat: Infinity }}
+                    >
+                      {stat.trend === 'positive' ? '↑' : '↓'}
+                    </motion.div>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <h3 className="text-lg font-semibold text-white/80">
+                    {stat.title}
+                  </h3>
+                  <div className="flex items-end space-x-2">
+                    <span className="text-4xl font-bold text-white">
+                      {stat.value}
+                    </span>
+                  </div>
+                  <p className="text-white/70">
+                    {stat.description}
+                  </p>
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-white/10">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-white/60">
+                      Current Trend
+                    </span>
+                    <span className="text-sm font-medium text-white">
+                      {stat.metric}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Decorative Elements */}
+                <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+                <div className="absolute -right-8 -bottom-8 w-24 h-24 bg-white/5 rounded-full blur-xl"></div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="text-center mt-12"
+        >
+          <p className="text-gray-400">
+            Data sourced from industry reports and market analysis
+          </p>
+          <button className="mt-6 bg-white/10 text-white px-6 py-3 rounded-full hover:bg-white/20 transition-all duration-300 backdrop-blur-sm">
+            View Detailed Report
+          </button>
+        </motion.div>
+      </div>
+    </div>
+  );
   return (
     <div className="min-h-screen bg-gray-50">
 
 
-      {/* Hero Section */}{" "}
-      
-      <div className="bg-gradient-to-r from-blue-700 to-blue-900 text-white py-20">
-        <div className="container mx-auto px-4">
-          {" "}
-          <div className="max-w-3xl mx-auto text-center">
+      {/* Hero Section */}
+      <div className="relative bg-gradient-to-r from-indigo-600 via-blue-700 to-purple-800 text-white py-32 overflow-hidden">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0">
+          {/* CSS grid pattern */}
+          <div 
+            className="absolute inset-0 opacity-20"
+            style={{
+              backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0)`,
+              backgroundSize: '40px 40px'
+            }}
+          ></div>
+          <motion.div
+            animate={{
+              rotate: [0, 360],
+              scale: [1, 1.2, 1],
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+            className="absolute -right-1/4 -top-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl"
+          />
+          <motion.div
+            animate={{
+              rotate: [360, 0],
+              scale: [1, 1.3, 1],
+            }}
+            transition={{
+              duration: 25,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+            className="absolute -left-1/4 -bottom-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl"
+          />
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-4xl mx-auto text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="inline-block mb-6 px-6 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20"
+            >
+              <span className="text-sm font-semibold">🚀 The Most Comprehensive PHP Learning Platform</span>
+            </motion.div>
+
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-5xl font-bold mb-6"
+              className="text-6xl font-bold mb-6 leading-tight"
             >
-              {" "}
-              Master PHP Development
-            </motion.h1>{" "}
+              Master
+              <span className="relative">
+                <span className="relative z-10 px-2 mx-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-lg">
+                  PHP
+                </span>
+                <motion.span
+                  className="absolute inset-0 bg-white/20 rounded-lg -rotate-2"
+                  animate={{ rotate: [2, -2, 2] }}
+                  transition={{ duration: 4, repeat: Infinity }}
+                />
+              </span>
+              Development
+            </motion.h1>
+
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-xl mb-8"
+              className="text-xl mb-12 text-blue-100"
             >
-              {" "}
-              From basics to advanced concepts, become a professional PHP
-              developer
+              From fundamentals to advanced concepts, join over 50,000+ developers who've 
+              mastered PHP with our industry-leading curriculum
             </motion.p>
 
+            {/* Enhanced Search Bar */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="relative max-w-2xl mx-auto"
+            >
+              <div className="absolute inset-0 bg-white/5 rounded-full blur"></div>
+              <div className="relative flex items-center">
+                <input
+                  type="text"
+                  placeholder="Search PHP courses, topics, or concepts..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full px-8 py-5 rounded-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-xl pl-14"
+                />
+                <Search className="absolute left-5 text-gray-400 w-5 h-5" />
+                <button className="absolute right-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300">
+                  Search
+                </button>
+              </div>
+            </motion.div>
 
-            {/* Search Bar */}{" "}
-
-            <div className="relative max-w-xl mx-auto">
-              <input
-                type="text"
-                placeholder="Search PHP courses..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-6 py-4 rounded-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />{" "}
-              <Search className="absolute right-4 top-4 text-gray-400" />
-            </div>{" "}
+            {/* Quick Stats */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="flex justify-center gap-8 mt-12"
+            >
+              {[
+                { label: "Active Students", value: "50K+" },
+                { label: "Video Hours", value: "1,200+" },
+                { label: "5-Star Reviews", value: "15K+" },
+              ].map((stat, index) => (
+                <div key={index} className="text-center">
+                  <div className="text-2xl font-bold">{stat.value}</div>
+                  <div className="text-sm text-blue-200">{stat.label}</div>
+                </div>
+              ))}
+            </motion.div>
           </div>
-        </div>{" "}
+        </div>
       </div>
 
 
       {/* Stats Section */}
-      <div className="py-20 bg-gradient-to-r from-blue-50 to-indigo-50">
+      <div className="py-10 bg-white">
         <div className="container mx-auto px-4">
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            className="text-3xl font-bold text-center mb-12 text-black"
+            className="text-3xl font-bold text-center mb-12 text-blue-400"
           >
-            PHP By The Numbers
+            PHP BY THE NUMBERS
           </motion.h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
@@ -134,57 +378,62 @@ const PHPPage = () => {
                 value: "78.9%",
                 label: "Server-side Websites",
                 icon: <Server className="w-8 h-8" />,
-                color: "from-blue-500 to-blue-600"
+                color: "from-pink-500 to-rose-600",
+                shadowColor: "shadow-rose-500/20"
               },
               {
                 value: "45M+",
                 label: "Websites Using PHP",
                 icon: <Globe className="w-8 h-8" />,
-                color: "from-indigo-500 to-indigo-600"
+                color: "from-amber-400 to-orange-500",
+                shadowColor: "shadow-orange-500/20"
               },
               {
                 value: "8K+",
                 label: "PHP Libraries",
                 icon: <Code className="w-8 h-8" />,
-                color: "from-purple-500 to-purple-600"
+                color: "from-cyan-400 to-teal-500",
+                shadowColor: "shadow-teal-500/20"
               },
               {
                 value: "25K+",
                 label: "Active Developers",
                 icon: <Users className="w-8 h-8" />,
-                color: "from-blue-600 to-indigo-600"
+                color: "from-fuchsia-500 to-purple-600",
+                shadowColor: "shadow-purple-500/20"
               },
             ].map((stat, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+                whileHover={{ 
+                  y: -5,
+                  transition: { duration: 0.2 }
+                }}
                 transition={{ delay: index * 0.1 }}
-                className="relative p-8 rounded-2xl bg-white shadow-xl border border-blue-50 overflow-hidden"
+                className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${stat.color} ${stat.shadowColor} shadow-xl p-8`}
               >
-                {/* Gradient Background Overlay */}
-                <div className={`absolute inset-0 opacity-5 bg-gradient-to-br ${stat.color}`} />
-                
-                {/* Content */}
+                <div className="absolute inset-0 bg-black opacity-10"></div>
                 <div className="relative z-10">
                   <div className="flex justify-center mb-6">
-                    <div className="p-3 rounded-full bg-gradient-to-r from-blue-100 to-indigo-100">
-                      <div className="text-blue-600">
+                    <div className="p-3 bg-white/20 rounded-lg backdrop-blur-sm">
+                      <div className="text-white">
                         {stat.icon}
                       </div>
                     </div>
                   </div>
-                  <h3 className="text-4xl font-bold text-gray-800 mb-3 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                  <h3 className="text-4xl font-bold text-white mb-3">
                     {stat.value}
                   </h3>
-                  <p className="text-gray-600 font-medium">
+                  <p className="text-white/80 font-medium">
                     {stat.label}
                   </p>
                 </div>
                 
                 {/* Decorative Elements */}
-                <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-gradient-to-br from-blue-100 to-transparent rounded-full opacity-20" />
+                <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+                <div className="absolute -right-8 -bottom-8 w-24 h-24 bg-white/5 rounded-full blur-xl"></div>
               </motion.div>
             ))}
           </div>
@@ -274,18 +523,18 @@ const PHPPage = () => {
       </div>
 
 
-      {/* Why Choose PHP Section */}
-      <div className="py-20 bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
+     { /* Why Choose PHP Section */}
+      <div className="py-20 bg-gray-900">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold mb-4 text-gray-800">
-              Why Choose <span className="text-blue-600">PHP?</span>
+            <h2 className="text-4xl font-bold mb-4 text-white">
+              Why Choose <span className="text-blue-400">PHP?</span>
             </h2>
-            <div className="w-20 h-1 bg-blue-600 mx-auto rounded-full"></div>
+            <div className="w-20 h-1 bg-blue-400 mx-auto rounded-full"></div>
           </motion.div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -294,37 +543,43 @@ const PHPPage = () => {
                 title: "Easy to Learn",
                 description: "Simple syntax and extensive documentation make PHP perfect for beginners",
                 icon: <BookOpen className="w-6 h-6" />,
-                color: "from-blue-500 to-blue-600"
+                color: "from-pink-500 to-rose-600",
+                shadowColor: "shadow-rose-500/20"
               },
               {
                 title: "Huge Community",
                 description: "Access to vast resources, frameworks, and community support",
                 icon: <Users className="w-6 h-6" />,
-                color: "from-indigo-500 to-indigo-600"
+                color: "from-amber-400 to-orange-500",
+                shadowColor: "shadow-orange-500/20"
               },
               {
                 title: "Market Demand",
                 description: "High demand for PHP developers in the job market",
                 icon: <Globe className="w-6 h-6" />,
-                color: "from-purple-500 to-purple-600"
+                color: "from-cyan-400 to-teal-500",
+                shadowColor: "shadow-teal-500/20"
               },
               {
                 title: "Versatility",
                 description: "Build anything from simple websites to complex web applications",
                 icon: <Code className="w-6 h-6" />,
-                color: "from-blue-600 to-indigo-600"
+                color: "from-fuchsia-500 to-purple-600",
+                shadowColor: "shadow-purple-500/20"
               },
               {
                 title: "Database Integration",
                 description: "Seamless integration with various database systems",
                 icon: <Database className="w-6 h-6" />,
-                color: "from-indigo-600 to-purple-600"
+                color: "from-green-400 to-emerald-500",
+                shadowColor: "shadow-emerald-500/20"
               },
               {
                 title: "Security Features",
                 description: "Built-in security features and regular updates",
                 icon: <Shield className="w-6 h-6" />,
-                color: "from-purple-600 to-blue-600"
+                color: "from-blue-400 to-indigo-500",
+                shadowColor: "shadow-indigo-500/20"
               },
             ].map((feature, index) => (
               <motion.div
@@ -336,30 +591,30 @@ const PHPPage = () => {
                   transition: { duration: 0.2 }
                 }}
                 transition={{ delay: index * 0.1 }}
-                className="relative bg-white p-8 rounded-2xl shadow-xl border border-blue-200 overflow-hidden group"
+                className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${feature.color} ${feature.shadowColor} shadow-xl p-8`}
               >
-                {/* Gradient Background Overlay */}
-                <div className={`absolute inset-0 opacity-0 group-hover:opacity-5 transition-opacity bg-gradient-to-br ${feature.color}`} />
+                <div className="absolute inset-0 bg-black opacity-10"></div>
                 
                 {/* Content */}
                 <div className="relative z-10">
                   <div className="flex justify-center mb-6">
-                    <div className="p-3 rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 group-hover:from-blue-100 group-hover:to-indigo-100 transition-colors">
-                      <div className="text-blue-600 group-hover:scale-110 transition-transform">
+                    <div className="p-3 rounded-lg bg-white/20 backdrop-blur-sm">
+                      <div className="text-white transition-transform">
                         {feature.icon}
                       </div>
                     </div>
                   </div>
-                  <h3 className="text-xl font-bold mb-3 text-gray-800 group-hover:text-blue-600 transition-colors">
+                  <h3 className="text-xl font-bold mb-3 text-white">
                     {feature.title}
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-white/80">
                     {feature.description}
                   </p>
                 </div>
                 
                 {/* Decorative Elements */}
-                <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-gradient-to-br from-blue-50 to-transparent rounded-full opacity-20" />
+                <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+                <div className="absolute -right-8 -bottom-8 w-24 h-24 bg-white/5 rounded-full blur-xl"></div>
               </motion.div>
             ))}
           </div>
@@ -392,7 +647,7 @@ const PHPPage = () => {
               {
                 question: "What can I build with PHP?",
                 answer: "PHP is versatile - you can build websites, web applications, APIs, CMS systems, e-commerce platforms, and more.",
-                icon: "🛠️"
+                icon: "🛠"
               },
               {
                 question: "Do I need to know MySQL?",

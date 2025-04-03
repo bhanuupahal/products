@@ -30,8 +30,8 @@ const Navbar = () => {
       description: 'JavaScript programming'
     },
     {
-      name: 'Mobile',
-      route: '/mobile',
+      name: 'Mobile App Development',
+      route: '/mobileappdevelopment',
       description: 'Mobile app development'
     },
     {
