@@ -259,12 +259,12 @@ const Home = () => {
               <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-xl">
                 <div className="grid grid-cols-3 gap-6">
                   {[
-                    { name: 'React', icon: '/icons/react.svg', delay: 0, color: '#61DAFB' },
-                    { name: 'Node.js', icon: '/icons/nodejs.svg', delay: 0.2, color: '#339933' },
-                    { name: 'MongoDB', icon: '/icons/mongodb.svg', delay: 0.4, color: '#47A248' },
-                    { name: 'JavaScript', icon: '/icons/javascript.svg', delay: 0.6, color: '#F7DF1E' },
-                    { name: 'TypeScript', icon: '/icons/typescript.svg', delay: 0.8, color: '#3178C6' },
-                    { name: 'Python', icon: '/icons/python.svg', delay: 1, color: '#3776AB' }
+                    { name: 'React', icon: '/images/react.png', delay: 0, color: '#61DAFB' },
+                    { name: 'Node.js', icon: '/images/nodejs.webp', delay: 0.2, color: '#339933' },
+                    { name: 'MongoDB', icon: '/images/mongodb.png', delay: 0.4, color: '#47A248' },
+                    { name: 'JavaScript', icon: '/images/javascript.png', delay: 0.6, color: '#F7DF1E' },
+                    { name: 'TypeScript', icon: '/images/typescript.webp', delay: 0.8, color: '#3178C6' },
+                    { name: 'Python', icon: '/images/python.webp', delay: 1, color: '#3776AB' }
                   ].map((tech, index) => (
                     <motion.div
                       key={tech.name}

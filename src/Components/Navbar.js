@@ -7,38 +7,43 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCategoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
 
-  // Updated categories array with proper naming and routes
   const categories = [
+    {
+      name: 'JavaScript',
+      route: '/javascript',
+      icon: '⚡', // Adding an icon
+      description: 'Modern JavaScript, React, and Node.js' // Adding a description
+    },
     {
       name: 'WordPress',
       route: '/wordpress',
-      description: 'Learn WordPress development'
+      icon: '🎨',
+      description: 'CMS and Website Building'
     },
     {
       name: 'PHP',
       route: '/php',
-      description: 'Master PHP programming'
+      icon: '🔧',
+      description: 'Backend Development'
     },
     {
-      name: 'HTML',
+      name: 'Mobile',
+      route: '/mobile',
+      icon: '📱',
+      description: 'Mobile App Development'
+    },
+    {
+      name: 'HTML5',
       route: '/html',
-      description: 'HTML5 fundamentals'
-    },
-    {
-      name: 'JavaScript',
-      route: '/javascript',
-      description: 'JavaScript programming'
-    },
-    {
-      name: 'Mobile App Development',
-      route: '/mobileappdevelopment',
-      description: 'Mobile app development'
+      icon: '🌐',
+      description: 'Web Development Basics'
     },
     {
       name: 'Plugins',
       route: '/plugins',
-      description: 'WordPress plugins'
-    }
+      icon: '🔌',
+      description: 'Extensions and Add-ons'
+    },
   ];
 
   return (
@@ -55,7 +60,7 @@ const Navbar = () => {
               <img 
                 src="/images/mainlogo.webp" 
                 alt="Company Logo" 
-                className="h-20 w-auto"
+                className="h-20 w-auto" // Increased height from h-8 to h-12
               />
             </Link>
           </motion.div>
@@ -66,37 +71,31 @@ const Navbar = () => {
               Home
             </Link>
             
-            {/* Categories Dropdown */}
+            {/* Desktop Categories Dropdown */}
             <div 
               className="relative"
               onMouseEnter={() => setCategoryDropdownOpen(true)}
               onMouseLeave={() => setCategoryDropdownOpen(false)}
             >
-              <button
-                className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md inline-flex items-center"
-              >
+              <button className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md inline-flex items-center">
                 <span>Categories</span>
-                <ChevronDown
-                  className={`ml-2 h-5 w-5 transform transition-transform duration-200 ${
-                    isCategoryDropdownOpen ? 'rotate-180' : ''
-                  }`}
-                />
+                <ChevronDown className={`ml-2 h-5 w-5 transform transition-transform duration-200 ${isCategoryDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
 
-              {/* Enhanced Dropdown Menu */}
               {isCategoryDropdownOpen && (
                 <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl py-2 z-50">
                   {categories.map((category, index) => (
                     <Link
                       key={index}
                       to={category.route}
-                      className="block px-4 py-3 hover:bg-gray-50 transition duration-150 ease-in-out"
+                      className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-200"
                     >
-                      <div className="text-sm font-medium text-gray-900">
-                        {category.name}
-                      </div>
-                      <div className="text-xs text-gray-500">
-                        {category.description}
+                      <div className="flex items-center">
+                        <span className="text-xl mr-3">{category.icon}</span>
+                        <div>
+                          <div className="font-medium">{category.name}</div>
+                          <div className="text-xs text-gray-500">{category.description}</div>
+                        </div>
                       </div>
                     </Link>
                   ))}
@@ -122,6 +121,12 @@ const Navbar = () => {
               <UserPlus className="w-5 h-5" />
               <span>Register</span>
             </Link>
+            <Link 
+              to="/admin/dashboard" 
+              className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md"
+            >
+              Admin Dashboard
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -145,11 +150,7 @@ const Navbar = () => {
               className="md:hidden"
             >
               <div className="px-2 pt-2 pb-3 space-y-1">
-                <Link 
-                  to="/" 
-                  className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md"
-                  onClick={() => setIsMenuOpen(false)}
-                >
+                <Link to="/" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md">
                   Home
                 </Link>
                 
@@ -160,11 +161,17 @@ const Navbar = () => {
                     className="w-full text-left text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md flex justify-between items-center"
                   >
                     <span>Categories</span>
-                    <ChevronDown
-                      className={`h-5 w-5 transform transition-transform duration-200 ${
-                        isCategoryDropdownOpen ? 'rotate-180' : ''
-                      }`}
-                    />
+                    <svg
+                      className={`h-5 w-5 transform ${isCategoryDropdownOpen ? 'rotate-180' : ''}`}
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path d="M19 9l-7 7-7-7"></path>
+                    </svg>
                   </button>
                   {isCategoryDropdownOpen && (
                     <div className="bg-gray-50 rounded-md mt-1">
@@ -178,8 +185,7 @@ const Navbar = () => {
                             setCategoryDropdownOpen(false);
                           }}
                         >
-                          <div className="font-medium">{category.name}</div>
-                          <div className="text-xs text-gray-500">{category.description}</div>
+                          {category.name}
                         </Link>
                       ))}
                     </div>
@@ -193,18 +199,10 @@ const Navbar = () => {
                     className="w-full px-4 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
-                <Link 
-                  to="/login" 
-                  className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md"
-                  onClick={() => setIsMenuOpen(false)}
-                >
+                <Link to="/login" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md">
                   Login
                 </Link>
-                <Link 
-                  to="/register" 
-                  className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md"
-                  onClick={() => setIsMenuOpen(false)}
-                >
+                <Link to="/register" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md">
                   Register
                 </Link>
               </div>
