@@ -1,9 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Star, Clock, Users, ChevronRight } from 'lucide-react';
 
 const ProductCard = ({ product }) => {
+  const navigate = useNavigate();
+
   const formatIndianPrice = (price) => {
     const priceInRupees = Math.round(price * 83);
     return new Intl.NumberFormat('en-IN', {
@@ -11,6 +13,25 @@ const ProductCard = ({ product }) => {
       currency: 'INR',
       maximumFractionDigits: 0,
     }).format(priceInRupees);
+  };
+
+  const handleCourseNavigation = () => {
+    // Extract category from title or use product.category if available
+    const title = product.title.toLowerCase();
+    
+    if (title.includes('wordpress')) {
+      navigate('/wordpress');
+    } else if (title.includes('php')) {
+      navigate('/php');
+    } else if (title.includes('javascript') || title.includes('react')) {
+      navigate('/javascript');
+    } else if (title.includes('html')) {
+      navigate('/html');
+    } else if (title.includes('plugin')) {
+      navigate('/plugins');
+    } else if (title.includes('mobile') || title.includes('app')) {
+      navigate('/mobileappdevelopment');
+    }
   };
 
   return (
@@ -77,6 +98,7 @@ const ProductCard = ({ product }) => {
             )}
           </div>
           <motion.button
+            onClick={handleCourseNavigation}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2"

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, ChevronDown, Search, User, UserPlus } from 'lucide-react';
+import { Menu, X, ChevronDown, Search, User, UserPlus, ShoppingCart } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
@@ -126,6 +126,13 @@ const Navbar = () => {
               className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md"
             >
               Admin Dashboard
+            </Link>
+            <Link 
+              to="/cart" 
+              className="flex items-center gap-2 text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md"
+            >
+              <ShoppingCart className="w-5 h-5" />
+              <span>Cart</span>
             </Link>
           </div>
 

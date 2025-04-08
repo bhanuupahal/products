@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import Navbar from './Components/Navbar';
@@ -20,8 +21,36 @@ import ProductList from './Components/Dashboard/AdminDashboard/ProductList';
 import TransactionHistory from './Components/Dashboard/AdminDashboard/TransactionHistory';
 import PaymentSettings from './Components/Dashboard/AdminDashboard/PaymentSettings';
 import UserManagement from './Components/Dashboard/AdminDashboard/UserManagement';
+import CartList from './Components/Cart/CartList';
+import CheckoutPage from './Components/Checkout/CheckoutPage';
 
 function App() {
+  const [cartItems, setCartItems] = useState([
+    {
+      id: 1,
+      name: 'React Complete Guide',
+      price: 4999,
+      quantity: 1,
+      image: 'https://cdn.pixabay.com/photo/2016/11/19/14/00/code-1839406_1280.jpg',
+      instructor: 'manoj bhati',
+      duration: '15 hours',
+      students: 1500,
+    },
+    {
+      id: 2,
+      name: 'Python Masterclass',
+      price: 3499,
+      quantity: 1,
+      image: 'https://cdn.pixabay.com/photo/2016/11/30/20/58/programming-1873854_1280.png',
+      instructor: 'manoj',
+      duration: '20 hours',
+      students: 2200,
+    }
+  ]);
+
+  const calculateTotal = () =>
+    cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+
   return (
     <div className="App">
       <Routes>
@@ -33,6 +62,25 @@ function App() {
               <Navbar />
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route 
+                  path="/cart" 
+                  element={
+                    <CartList 
+                      cartItems={cartItems} 
+                      setCartItems={setCartItems}
+                      calculateTotal={calculateTotal}
+                    />
+                  } 
+                />
+                <Route 
+                  path="/checkout" 
+                  element={
+                    <CheckoutPage 
+                      cartItems={cartItems} 
+                      calculateTotal={calculateTotal}
+                    />
+                  } 
+                />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/categories" element={<Categories />} />
@@ -64,5 +112,8 @@ function App() {
 }
 
 export default App;
+
+
+
 
 
