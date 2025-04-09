@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-
+  const [rememberMe, setRememberMe] = useState(false);
+  
   return (
     <div className="container mx-auto p-4 min-h-screen flex items-center justify-center">
       <div className="max-w-5xl w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex">
@@ -84,7 +85,20 @@ const Login = () => {
                   )}
                 </button>
               </div>
-              <div className="flex justify-between items-center mt-2">
+              <div className="flex items-center justify-between mt-2">
+                <div className="flex items-center">
+                  <input
+                    id="remember-me"
+                    name="remember-me"
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  />
+                  <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+                    Remember me
+                  </label>
+                </div>
                 <a href="/forgot-password" className="text-sm text-blue-600 hover:text-blue-800">
                   Forgot Password?
                 </a>
@@ -93,36 +107,10 @@ const Login = () => {
 
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors mt-6"
             >
               Sign in
             </button>
-
-            <div className="relative my-4">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Or continue with</span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <button
-                type="button"
-                className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-              >
-                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5 mr-2" />
-                Google
-              </button>
-              <button
-                type="button"
-                className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-              >
-                <img src="https://www.svgrepo.com/show/475647/facebook-color.svg" alt="Facebook" className="w-5 h-5 mr-2" />
-                Facebook
-              </button>
-            </div>
 
             <p className="text-center text-sm text-gray-600 mt-4">
               Don't have an account?{' '}
@@ -138,4 +126,6 @@ const Login = () => {
 };
 
 export default Login;
+
+
 

@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
-import Navbar from './Components/Navbar';
+import Navbar from './Components/NavbarSection/Navbar';
 import Footer from './Components/FooterSection/Footer';
-import Home from './Components/Home';
-import Login from './Components/Login';
-import Register from './Components/Register';
-import Categories from './Components/Categories';
-import ForgotPassword from './Components/ForgotPassword';
+import Home from './Components/HomeSection/Home';
+import Login from './Components/LoginSection/Login';
+import Register from './Components/LoginSection/Register';
+import Categories from './Components/CategoriesSection/Categories';
+import ForgotPassword from './Components/LoginSection/ForgotPassword';
 import WordPress from './Components/CategoriesSection/WordPress';
 import PHP from './Components/CategoriesSection/PHP';
 import HTML from './Components/CategoriesSection/HTML';
@@ -21,8 +21,8 @@ import ProductList from './Components/Dashboard/AdminDashboard/ProductList';
 import TransactionHistory from './Components/Dashboard/AdminDashboard/TransactionHistory';
 import PaymentSettings from './Components/Dashboard/AdminDashboard/PaymentSettings';
 import UserManagement from './Components/Dashboard/AdminDashboard/UserManagement';
-import CartList from './Components/Cart/CartList';
-import CheckoutPage from './Components/Checkout/CheckoutPage';
+import CartList from './Components/HomeSection/CartList';
+import CheckoutPage from './Components/HomeSection/CheckoutPage';
 
 function App() {
   const [cartItems, setCartItems] = useState([
@@ -112,6 +112,9 @@ function App() {
 }
 
 export default App;
+
+
+
 
 
 
