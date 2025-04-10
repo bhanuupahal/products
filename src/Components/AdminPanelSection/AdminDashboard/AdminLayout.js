@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { 
   Package, 
   List, 
@@ -15,13 +15,14 @@ import {
   Menu,
   FolderPlus
 } from 'lucide-react';
-import Navbar from '../../NavbarSection/Navbar';
+import toast from 'react-hot-toast';
 
 const AdminLayout = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const menuItems = [
     {
@@ -63,19 +64,21 @@ const AdminLayout = () => {
   ];
 
   const handleLogout = () => {
-    // Add logout logic here
-    console.log('Logging out...');
+    // Clear admin-specific data from localStorage
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('isAdmin');
+    
+    // Show success message
+    toast.success('Logged out successfully');
+    
+    // Redirect to admin login page
+    navigate('/admin-login');
   };
 
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Navbar - Visible on both mobile and desktop */}
-      <div className="fixed top-0 left-0 right-0 z-50">
-        <Navbar />
-      </div>
-
       {/* Mobile Admin Header */}
-      <div className="fixed top-16 left-0 right-0 bg-white z-40 border-b md:hidden">
+      <div className="fixed top-0 left-0 right-0 bg-white z-40 border-b md:hidden">
         <div className="flex items-center justify-between px-4 h-14">
           <button
             onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
@@ -88,10 +91,10 @@ const AdminLayout = () => {
       </div>
 
       {/* Dashboard Content */}
-      <div className="flex pt-16 md:pt-16">
+      <div className="flex">
         {/* Sidebar */}
         <aside 
-          className={`fixed top-[120px] md:top-16 left-0 h-[calc(100vh-120px)] md:h-[calc(100vh-64px)] bg-gray-900 text-white overflow-y-auto
+          className={`fixed top-0 md:top-0 left-0 h-screen bg-gray-900 text-white overflow-y-auto
             ${isCollapsed ? 'w-16' : 'w-64'} 
             transform ${isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
             transition-transform duration-300 ease-in-out z-40`}

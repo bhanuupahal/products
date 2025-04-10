@@ -103,11 +103,11 @@ const ProductPreview = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 mt-16">
-      {/* Add Toaster component */}
-      <Toaster position="top-right" />
-      
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+    <div className="container mx-auto p-4 dark:bg-gray-900">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+        {/* Add Toaster component */}
+        <Toaster position="top-right" />
+        
         <div className="md:flex">
           {/* Left Column */}
           <div className="md:w-1/2 p-6">

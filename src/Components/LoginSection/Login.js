@@ -20,8 +20,8 @@ const Login = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 min-h-screen flex items-center justify-center">
-      <div className="max-w-5xl w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex">
+    <div className="container mx-auto p-4 min-h-screen flex items-center justify-center dark:bg-gray-900">
+      <div className="max-w-5xl w-full bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden flex">
         {/* Left side - Image */}
         <div className="hidden md:block w-1/2 bg-cover bg-center" style={{
           backgroundImage: `url('https://images.unsplash.com/photo-1616763355603-9755a640a287?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80')`
@@ -36,53 +36,26 @@ const Login = () => {
 
         {/* Right side - Form */}
         <div className="w-full md:w-1/2 p-8">
-          <div className="mb-6">
-            <h1 className="text-2xl font-bold text-gray-800 mb-2">Sign In</h1>
-            <p className="text-sm text-gray-600">Please enter your credentials</p>
-          </div>
-
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            <div className="text-left">
-              <label className="block text-gray-700 text-sm font-semibold mb-2" htmlFor="email">
-                Email Address
-              </label>
-              <div className="relative">
-                <input
-                  type="email"
-                  id="email"
-                  className="w-full px-3 py-2 pl-10 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Enter your email"
-                />
-                <svg
-                  className="w-5 h-5 text-gray-500 absolute left-3 top-1/2 transform -translate-y-1/2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-              </div>
+          <h2 className="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100">Login</h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-gray-700 dark:text-gray-200 mb-2">Email</label>
+              <input
+                type="email"
+                id="email"
+                className="w-full px-4 py-2 rounded-lg border bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                placeholder="Enter your email"
+              />
             </div>
-
-            <div className="text-left">
-              <label className="block text-gray-700 text-sm font-semibold mb-2" htmlFor="password">
-                Password
-              </label>
+            <div>
+              <label className="block text-gray-700 dark:text-gray-200 mb-2">Password</label>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
                   id="password"
-                  className="w-full px-3 py-2 pl-10 pr-10 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 rounded-lg border bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                   placeholder="Enter your password"
                 />
-                <svg
-                  className="w-5 h-5 text-gray-500 absolute left-3 top-1/2 transform -translate-y-1/2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
                 <button
                   type="button"
                   className="absolute right-3 top-1/2 transform -translate-y-1/2"
@@ -100,35 +73,33 @@ const Login = () => {
                   )}
                 </button>
               </div>
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="remember"
-                    checked={rememberMe}
-                    onChange={(e) => setRememberMe(e.target.checked)}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                  />
-                  <label htmlFor="remember" className="ml-2 block text-sm text-gray-900">
-                    Remember me
-                  </label>
-                </div>
-                <Link
-                  to="/forget-password"
-                  className="text-sm font-medium text-blue-600 hover:text-blue-500"
-                >
-                  Forgot password?
-                </Link>
-              </div>
             </div>
-
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="remember"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                />
+                <label htmlFor="remember" className="ml-2 block text-sm text-gray-900">
+                  Remember me
+                </label>
+              </div>
+              <Link
+                to="/forget-password"
+                className="text-sm font-medium text-blue-600 hover:text-blue-500"
+              >
+                Forgot password?
+              </Link>
+            </div>
             <button
               type="submit"
               className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors mt-6"
             >
               Sign in
             </button>
-
             <p className="text-center text-sm text-gray-600 mt-4">
               Don't have an account?{' '}
               <a href="/register" className="text-blue-600 hover:text-blue-800 font-semibold">
@@ -143,3 +114,4 @@ const Login = () => {
 };
 
 export default Login;
+

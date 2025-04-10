@@ -12,6 +12,7 @@ import {
   Upload,
   Eye
 } from 'lucide-react';
+import { useTheme } from '../../../context/ThemeContext';
 
 const AddProduct = () => {
   const [formData, setFormData] = useState({
@@ -768,3 +769,8 @@ const AddProduct = () => {
 };
 
 export default AddProduct;
+
+
+
+
+
