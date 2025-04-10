@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import './App.css';
 import Navbar from './Components/NavbarSection/Navbar';
 import Footer from './Components/FooterSection/Footer';
@@ -53,6 +54,7 @@ function App() {
 
   return (
     <div className="App">
+      <Toaster position="top-right" />
       <Routes>
         {/* Public Routes - with Navbar and Footer */}
         <Route
@@ -112,6 +114,7 @@ function App() {
 }
 
 export default App;
+
 
 
 

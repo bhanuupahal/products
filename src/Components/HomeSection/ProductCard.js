@@ -1,11 +1,9 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Star, Clock, Users, ChevronRight } from 'lucide-react';
+import { Star, Clock, Users, ChevronRight, ArrowRight } from 'lucide-react';
 
 const ProductCard = ({ product }) => {
-  const navigate = useNavigate();
-
   const formatIndianPrice = (price) => {
     const priceInRupees = Math.round(price * 83);
     return new Intl.NumberFormat('en-IN', {
@@ -15,23 +13,28 @@ const ProductCard = ({ product }) => {
     }).format(priceInRupees);
   };
 
-  const handleCourseNavigation = () => {
-    // Extract category from title or use product.category if available
-    const title = product.title.toLowerCase();
+  const navigate = useNavigate();
+
+  const handleViewCourse = () => {
+    // Store the current product in localStorage
+    const products = JSON.parse(localStorage.getItem('products') || '[]');
+    const existingProduct = products.find(p => p.id === product.id);
     
-    if (title.includes('wordpress')) {
-      navigate('/wordpress');
-    } else if (title.includes('php')) {
-      navigate('/php');
-    } else if (title.includes('javascript') || title.includes('react')) {
-      navigate('/javascript');
-    } else if (title.includes('html')) {
-      navigate('/html');
-    } else if (title.includes('plugin')) {
-      navigate('/plugins');
-    } else if (title.includes('mobile') || title.includes('app')) {
-      navigate('/mobileappdevelopment');
+    if (!existingProduct) {
+      products.push({
+        id: product.id,
+        name: product.title,  // Changed from name to title to match your data structure
+        price: product.price,
+        originalPrice: product.originalPrice,
+        category: product.badge || 'Course',  // Using badge as category if available
+        description: product.description,
+        imageUrl: product.thumbnail,  // Changed from imageUrl to thumbnail
+        rating: product.rating
+      });
+      localStorage.setItem('products', JSON.stringify(products));
     }
+    
+    navigate(`/product/${product.id}`);
   };
 
   return (
@@ -86,7 +89,7 @@ const ProductCard = ({ product }) => {
         </div>
 
         {/* Price and Action */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-3">
           <div className="flex flex-col">
             <span className="text-2xl font-bold text-blue-600">
               {formatIndianPrice(product.price)}
@@ -98,13 +101,24 @@ const ProductCard = ({ product }) => {
             )}
           </div>
           <motion.button
-            onClick={handleCourseNavigation}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={handleViewCourse}
             className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2"
           >
-            View Course
+            Buy Now
             <ChevronRight className="w-4 h-4" />
+          </motion.button>
+        </div>
+
+        {/* See More Link */}
+        <div className="border-t border-gray-100 pt-3 mt-3">
+          <motion.button
+            onClick={handleViewCourse}
+            className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center justify-center w-full group"
+          >
+            See More Details
+            <ArrowRight className="w-4 h-4 ml-1 transition-transform duration-300 group-hover:translate-x-1" />
           </motion.button>
         </div>
       </div>

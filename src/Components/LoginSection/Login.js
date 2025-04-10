@@ -1,9 +1,24 @@
 import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const navigate = useNavigate();
   
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    // Your existing validation logic
+    
+    // On successful login
+    localStorage.setItem('userToken', 'dummy-token');
+    localStorage.setItem('isLoggedIn', 'true');
+    toast.success('Login successful!');
+    navigate('/'); // Redirect to home page
+  };
+
   return (
     <div className="container mx-auto p-4 min-h-screen flex items-center justify-center">
       <div className="max-w-5xl w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex">
@@ -26,7 +41,7 @@ const Login = () => {
             <p className="text-sm text-gray-600">Please enter your credentials</p>
           </div>
 
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div className="text-left">
               <label className="block text-gray-700 text-sm font-semibold mb-2" htmlFor="email">
                 Email Address
@@ -85,23 +100,25 @@ const Login = () => {
                   )}
                 </button>
               </div>
-              <div className="flex items-center justify-between mt-2">
+              <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center">
                   <input
-                    id="remember-me"
-                    name="remember-me"
                     type="checkbox"
+                    id="remember"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
-                  <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+                  <label htmlFor="remember" className="ml-2 block text-sm text-gray-900">
                     Remember me
                   </label>
                 </div>
-                <a href="/forgot-password" className="text-sm text-blue-600 hover:text-blue-800">
-                  Forgot Password?
-                </a>
+                <Link
+                  to="/forget-password"
+                  className="text-sm font-medium text-blue-600 hover:text-blue-500"
+                >
+                  Forgot password?
+                </Link>
               </div>
             </div>
 
@@ -126,6 +143,3 @@ const Login = () => {
 };
 
 export default Login;
-
-
-

@@ -1,11 +1,34 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Trash2, Plus, Minus, Clock, Users, BookOpen } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const CartList = ({ cartItems, setCartItems, calculateTotal }) => {
   const navigate = useNavigate();
-  
+
+  useEffect(() => {
+    // Load cart items from localStorage and keep only the first item
+    const savedCartItems = JSON.parse(localStorage.getItem('cart') || '[]');
+    // Take only the first item if exists
+    const limitedItems = savedCartItems.slice(0, 1);
+    setCartItems(limitedItems);
+    // Update localStorage to keep only one item
+    localStorage.setItem('cart', JSON.stringify(limitedItems));
+  }, [setCartItems]);
+
   const handleCheckout = () => {
+    if (cartItems.length === 0) {
+      toast.error('Your cart is empty!', {
+        duration: 2000,
+        position: 'top-right',
+        style: {
+          background: '#333',
+          color: '#fff',
+          padding: '16px',
+        },
+      });
+      return;
+    }
     navigate('/checkout');
   };
 
@@ -23,14 +46,22 @@ const CartList = ({ cartItems, setCartItems, calculateTotal }) => {
 
   const updateQuantity = (id, newQuantity) => {
     if (newQuantity < 1) return;
-    setCartItems(cartItems.map(item =>
+    const updatedItems = cartItems.map(item =>
       item.id === id ? { ...item, quantity: newQuantity } : item
-    ));
+    );
+    setCartItems(updatedItems);
+    localStorage.setItem('cart', JSON.stringify(updatedItems));
   };
 
   const removeItem = (id) => {
-    setCartItems(cartItems.filter(item => item.id !== id));
+    setCartItems([]);
+    localStorage.setItem('cart', JSON.stringify([]));
   };
+
+  // Add null check for cartItems
+  if (!cartItems) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
@@ -46,7 +77,8 @@ const CartList = ({ cartItems, setCartItems, calculateTotal }) => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-6">
-            {cartItems.map((item) => (
+            {/* Show only the first item */}
+            {cartItems.slice(0, 1).map((item) => (
               <div key={item.id} className="bg-white rounded-xl shadow-lg overflow-hidden">
                 <div className="flex flex-col md:flex-row">
                   {/* Image */}
@@ -77,15 +109,15 @@ const CartList = ({ cartItems, setCartItems, calculateTotal }) => {
                     <div className="flex flex-wrap gap-4 mt-4 text-sm text-gray-600">
                       <div className="flex items-center gap-1">
                         <Clock className="w-4 h-4" />
-                        <span>{item.duration}</span>
+                        <span>{item.duration || "8 hours"}</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <Users className="w-4 h-4" />
-                        <span>{item.students.toLocaleString()} students</span>
+                        <span>{(item.students || 0).toLocaleString()} students</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <BookOpen className="w-4 h-4" />
-                        <span>{item.instructor}</span>
+                        <span>{item.instructor || "Expert Instructor"}</span>
                       </div>
                     </div>
 
@@ -132,11 +164,11 @@ const CartList = ({ cartItems, setCartItems, calculateTotal }) => {
               <div className="space-y-4">
                 <div className="flex justify-between text-gray-600">
                   <span>Total Items</span>
-                  <span>{cartItems.length}</span>
+                  <span>1</span>
                 </div>
                 <div className="flex justify-between text-gray-600">
                   <span>Total Courses</span>
-                  <span>{cartItems.reduce((acc, item) => acc + item.quantity, 0)}</span>
+                  <span>{cartItems[0]?.quantity || 0}</span>
                 </div>
                 <div className="border-t pt-4">
                   <div className="flex justify-between items-center">
@@ -165,6 +197,3 @@ const CartList = ({ cartItems, setCartItems, calculateTotal }) => {
 };
 
 export default CartList;
-
-
-
