@@ -12,8 +12,10 @@ import {
   Users,
   Bell,
   Search,
-  Menu
+  Menu,
+  FolderPlus
 } from 'lucide-react';
+import Navbar from '../../NavbarSection/Navbar';
 
 const AdminLayout = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -31,6 +33,12 @@ const AdminLayout = () => {
       title: 'Add Product',
       icon: <Package size={20} />,
       path: '/admin/add-product'
+    },
+    
+    {
+      title: 'Add Category',
+      icon: <FolderPlus size={20} />,
+      path: '/admin/add-category'
     },
     {
       title: 'Product List',
@@ -61,15 +69,34 @@ const AdminLayout = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <div className="flex"> {/* Removed pt-16 since we no longer have the main navbar */}
-        {/* Sidebar - Fixed position */}
-        <div 
-          className={`fixed top-0 left-0 h-screen bg-gray-900 text-white overflow-y-auto
+      {/* Navbar - Visible on both mobile and desktop */}
+      <div className="fixed top-0 left-0 right-0 z-50">
+        <Navbar />
+      </div>
+
+      {/* Mobile Admin Header */}
+      <div className="fixed top-16 left-0 right-0 bg-white z-40 border-b md:hidden">
+        <div className="flex items-center justify-between px-4 h-14">
+          <button
+            onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
+            className="p-2 hover:bg-gray-100 rounded-lg"
+          >
+            <Menu size={24} />
+          </button>
+          <h1 className="text-xl font-bold">Admin Panel</h1>
+        </div>
+      </div>
+
+      {/* Dashboard Content */}
+      <div className="flex pt-16 md:pt-16">
+        {/* Sidebar */}
+        <aside 
+          className={`fixed top-[120px] md:top-16 left-0 h-[calc(100vh-120px)] md:h-[calc(100vh-64px)] bg-gray-900 text-white overflow-y-auto
             ${isCollapsed ? 'w-16' : 'w-64'} 
-            ${isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
-            transition-all duration-300 z-40`}
+            transform ${isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+            transition-transform duration-300 ease-in-out z-40`}
         >
-          {/* Sidebar Header - Sticky */}
+          {/* Sidebar Header */}
           <div className="sticky top-0 bg-gray-900 z-20">
             <div className="flex items-center justify-between p-4 border-b border-gray-700">
               {!isCollapsed && <h1 className="text-xl font-bold">Admin Panel</h1>}
@@ -90,6 +117,7 @@ const AdminLayout = () => {
                 to={item.path}
                 className={`flex items-center px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors duration-200
                   ${location.pathname === item.path ? 'bg-gray-800 text-white' : ''}`}
+                onClick={() => setIsMobileSidebarOpen(false)}
               >
                 <span className="inline-flex items-center justify-center">
                   {item.icon}
@@ -109,64 +137,19 @@ const AdminLayout = () => {
               {!isCollapsed && <span className="ml-3">Logout</span>}
             </button>
           </nav>
-        </div>
-        
+        </aside>
+
         {/* Main Content */}
-        <div className={`flex-1 ${isCollapsed ? 'md:ml-16' : 'md:ml-64'} transition-all duration-300`}>
-          {/* Dashboard Header */}
-          <header className="bg-white shadow-sm sticky top-0 z-30">
-            <div className="flex items-center justify-between px-4 py-3">
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
-                  className="p-2 rounded-lg hover:bg-gray-100 md:hidden"
-                >
-                  <Menu size={20} />
-                </button>
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                  <input
-                    type="text"
-                    placeholder="Search in dashboard..."
-                    className="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-64"
-                  />
-                </div>
-              </div>
-
-              {/* Notifications */}
-              <div className="flex items-center gap-4">
-                <div className="relative">
-                  <button
-                    onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
-                    className="p-2 rounded-lg hover:bg-gray-100 relative"
-                  >
-                    <Bell size={20} />
-                    <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
-                  </button>
-
-                  {isNotificationsOpen && (
-                    <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg py-2 z-30">
-                      <h3 className="px-4 py-2 text-sm font-semibold border-b">Notifications</h3>
-                      <div className="px-4 py-3 hover:bg-gray-50 cursor-pointer">
-                        <div className="text-sm font-medium">New Order</div>
-                        <div className="text-sm text-gray-600">Someone purchased your course</div>
-                        <div className="text-xs text-gray-400 mt-1">5 minutes ago</div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </header>
-
-          {/* Main Content Area */}
-          <main className="p-6 bg-gray-100">
-            <Outlet />
-          </main>
-        </div>
+        <main 
+          className={`flex-1 transition-all duration-300 ease-in-out
+            ${isCollapsed ? 'md:ml-16' : 'md:ml-64'} 
+            w-full p-6 mt-14 md:mt-0`}
+        >
+          <Outlet />
+        </main>
       </div>
 
-      {/* Mobile Sidebar Overlay */}
+      {/* Mobile Overlay */}
       {isMobileSidebarOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"

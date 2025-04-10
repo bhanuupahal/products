@@ -252,10 +252,11 @@ const TransactionHistory = () => {
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center">
-                      <span className="text-sm text-gray-900 font-medium">{transaction.buyerName}</span>
-                      <span className="ml-2 text-xs text-gray-500">#{transaction.buyerId}</span>
+                      <div className="h-8 w-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white text-sm font-medium">
+                        {transaction.buyerName.charAt(0)}
+                      </div>
+                      <span className="ml-3 text-sm text-gray-900">{transaction.buyerName}</span>
                     </div>
-                    <span className="text-xs text-gray-500">{transaction.buyerEmail}</span>
                   </td>
                   <td className="px-6 py-4">
                     <span className="text-sm font-medium text-gray-900">{formatAmount(transaction.amount)}</span>
@@ -324,11 +325,3 @@ const TransactionHistory = () => {
 };
 
 export default TransactionHistory;
-
-
-
-
-
-
-
-
