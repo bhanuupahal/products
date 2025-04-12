@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTheme } from '../../../context/ThemeContext';
 import { 
   X, 
   ImageIcon, 
@@ -6,15 +7,15 @@ import {
   Sparkles, 
   FolderIcon, 
   ChevronDown,
-  DollarSign,
-  Link as LinkIcon,  // Note: We're already using LinkIcon instead of Link
-  FileText,
   Upload,
-  Eye
+  Eye,
+  FileText,
+  Link as LinkIcon,
+  DollarSign
 } from 'lucide-react';
-import { useTheme } from '../../../context/ThemeContext';
 
 const AddProduct = () => {
+  const { isDarkMode } = useTheme();
   const [formData, setFormData] = useState({
     name: '',
     thumbnailImage: null,
@@ -210,16 +211,16 @@ const AddProduct = () => {
 
  
   return (
-    <div className="max-w-7xl mx-auto p-6">
+    <div className={`max-w-7xl mx-auto p-6 ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
       {/* Enhanced Header Section */}
       <div className="mb-8">
-        <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-8 text-white shadow-lg">
+        <div className=" rounded-2xl p-8 text-white shadow-lg">
           <div className="flex items-center gap-6">
             <div className="p-4 bg-white/20 backdrop-blur-lg rounded-xl">
               <Package className="w-10 h-10 text-white" />
             </div>
             <div>
-              <h1 className="text-4xl font-bold">Create New Product</h1>
+              <h1 className="text-4xl text-gradient-to-r from-blue-500 to-purple-600 font-bold">Create New Product</h1>
               <p className="text-white/80 mt-2 text-lg">
                 Craft an amazing product experience for your customers
               </p>
@@ -233,19 +234,27 @@ const AddProduct = () => {
         <div className="flex-grow lg:w-2/3">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Basic Information Card */}
-            <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+            <div className={`rounded-2xl shadow-lg p-8 border ${
+              isDarkMode 
+                ? 'bg-gray-800 border-gray-700 text-white' 
+                : 'bg-white border-gray-200 text-gray-800'
+            }`}>
               <div className="flex items-center gap-3 mb-8">
                 <div className="p-3 bg-blue-100 rounded-xl">
                   <Sparkles className="w-6 h-6 text-blue-600" />
                 </div>
-                <h2 className="text-2xl font-semibold text-gray-800">
+                <h2 className={`text-2xl font-semibold ${
+                  isDarkMode ? 'text-white' : 'text-gray-800'
+                }`}>
                   Basic Information
                 </h2>
               </div>
 
               {/* Product Name Input */}
               <div className="mb-8">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className={`block text-sm font-medium mb-2 ${
+                  isDarkMode ? 'text-gray-200' : 'text-gray-700'
+                }`}>
                   Product Name
                 </label>
                 <input
@@ -253,7 +262,11 @@ const AddProduct = () => {
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                  className={`w-full px-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
+                    isDarkMode 
+                      ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
+                      : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-500'
+                  }`}
                   placeholder="Enter product name"
                   required
                 />
@@ -261,17 +274,21 @@ const AddProduct = () => {
 
               {/* Category Dropdown Selection */}
               <div className="mb-8">
-                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                  <FolderIcon className="w-5 h-5 text-gray-600" />
+                <label className={`block text-sm font-medium mb-2 flex items-center gap-2 ${
+                  isDarkMode ? 'text-gray-200' : 'text-gray-700'
+                }`}>
+                  <FolderIcon className={`w-5 h-5 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`} />
                   Choose Category
                 </label>
                 <div className="relative">
                   <select
                     value={formData.category}
                     onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl 
-                      focus:ring-2 focus:ring-blue-500 focus:border-transparent 
-                      appearance-none transition-all duration-200"
+                    className={`w-full px-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none transition-all duration-200 ${
+                      isDarkMode 
+                        ? 'bg-gray-700 border-gray-600 text-white' 
+                        : 'bg-gray-50 border-gray-200 text-gray-900'
+                    }`}
                     required
                   >
                     <option value="">Select a category</option>
@@ -282,14 +299,16 @@ const AddProduct = () => {
                     ))}
                   </select>
                   <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
-                    <ChevronDown className="w-5 h-5 text-gray-400" />
+                    <ChevronDown className={`w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`} />
                   </div>
                 </div>
               </div>
 
               {/* Enhanced Description Input */}
               <div className="mb-8">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className={`block text-sm font-medium mb-2 ${
+                  isDarkMode ? 'text-gray-200' : 'text-gray-700'
+                }`}>
                   Product Description
                 </label>
                 <textarea
@@ -297,7 +316,11 @@ const AddProduct = () => {
                   value={formData.productInfo}
                   onChange={handleInputChange}
                   rows="4"
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                  className={`w-full px-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
+                    isDarkMode 
+                      ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
+                      : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-500'
+                  }`}
                   placeholder="Describe your product in detail..."
                   required
                 />
@@ -420,7 +443,11 @@ const AddProduct = () => {
             {/* Additional Images Section */}
 
             {/* Pricing & Resources Card */}
-            <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+            <div className={`bg-white rounded-2xl shadow-lg p-8 border ${
+              isDarkMode 
+                ? 'bg-gray-800 border-gray-700' 
+                : 'bg-white border-gray-100'
+            }`}>
               <div className="flex items-center gap-3 mb-8">
                 <div className="p-3 bg-green-100 rounded-xl">
                   <DollarSign className="w-6 h-6 text-green-600" />
@@ -475,7 +502,7 @@ const AddProduct = () => {
 
               {/* Resource Type Selection */}
               <div className="mb-8">
-                <label className="block text-sm font-medium text-gray-700 mb-4">
+                <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-white' : 'text-gray-700'}`}>
                   Resource Type
                 </label>
                 <div className="grid grid-cols-2 gap-4">
@@ -490,8 +517,12 @@ const AddProduct = () => {
                       }))}
                       className={`p-4 rounded-xl border-2 transition-all duration-300
                         ${formData.resourceType === type
-                          ? 'border-purple-500 bg-purple-50'
-                          : 'border-gray-200 hover:border-purple-200'
+                          ? isDarkMode 
+                            ? 'border-purple-500 bg-gray-700' 
+                            : 'border-purple-500 bg-purple-50'
+                          : isDarkMode 
+                            ? 'border-gray-700 hover:border-purple-500/50 bg-gray-800' 
+                            : 'border-gray-200 hover:border-purple-500/50'
                         }`}
                     >
                       <div className="flex flex-col items-center gap-2">
@@ -510,15 +541,19 @@ const AddProduct = () => {
               {/* Resource Input */}
               {formData.resourceType === 'file' ? (
                 <div className="mb-8">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-white' : 'text-gray-700'}`}>
                     Upload Product File
                   </label>
                   <div 
-                    className={`border-2 border-dashed rounded-xl transition-all duration-300 
-                      ${formData.productFile 
-                        ? 'border-blue-200 bg-blue-50/50' 
-                        : 'border-gray-200 hover:border-blue-200 hover:bg-blue-50/20'
-                      }`}
+                    className={`border-2 border-dashed rounded-xl transition-all duration-300 ${
+                      formData.productFile 
+                        ? isDarkMode 
+                          ? 'border-blue-400 bg-gray-700' 
+                          : 'border-blue-200 bg-blue-50/50'
+                        : isDarkMode 
+                          ? 'border-gray-700 hover:border-blue-400 bg-gray-800' 
+                          : 'border-gray-200 hover:border-blue-200 hover:bg-blue-50/20'
+                    }`}
                   >
                     <input
                       type="file"
@@ -529,7 +564,11 @@ const AddProduct = () => {
                     />
                     {formData.productFile ? (
                       <div className="p-4">
-                        <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm border border-blue-100">
+                        <div className={`flex items-center justify-between p-3 rounded-lg shadow-sm border ${
+                          isDarkMode 
+                            ? 'bg-gray-700 border-gray-600' 
+                            : 'bg-white border-blue-100'
+                        }`}>
                           <div className="flex items-center">
                             <div className="p-2 bg-blue-50 rounded-lg mr-3">
                               <FileText className="w-6 h-6 text-blue-500" />
@@ -556,14 +595,18 @@ const AddProduct = () => {
                     ) : (
                       <label htmlFor="productFile" className="cursor-pointer block p-6">
                         <div className="flex flex-col items-center">
-                          <div className="mb-3 p-4 bg-blue-100 rounded-full">
+                          <div className={`mb-3 p-4 rounded-full ${isDarkMode ? 'bg-gray-700' : 'bg-blue-100'}`}>
                             <Upload className="w-8 h-8 text-blue-500" />
                           </div>
                           <span className="text-gray-700 font-medium">Drop your file here</span>
                           <span className="text-sm text-gray-500 mt-1">or click to browse</span>
                           <div className="mt-4 flex items-center gap-4">
                             {['ZIP', 'RAR', 'PDF'].map((format) => (
-                              <span key={format} className="px-3 py-1 bg-gray-100 rounded-full text-xs text-gray-600">
+                              <span key={format} className={`px-3 py-1 rounded-full text-xs ${
+                                isDarkMode 
+                                  ? 'bg-gray-700 text-white' 
+                                  : 'bg-gray-100 text-gray-600'
+                              }`}>
                                 {format}
                               </span>
                             ))}
@@ -576,7 +619,7 @@ const AddProduct = () => {
                 </div>
               ) : (
                 <div className="mb-8">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-white' : 'text-gray-700'}`}>
                     Product Link
                   </label>
                   <div className="space-y-2">
@@ -589,11 +632,11 @@ const AddProduct = () => {
                         name="productLink"
                         value={formData.productLink}
                         onChange={handleInputChange}
-                        className={`w-full pl-12 pr-10 py-3 border rounded-xl transition-all duration-200
-                          ${formData.productLink 
-                            ? 'bg-blue-50/50 border-blue-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent' 
-                            : 'bg-gray-50 border-gray-200 focus:ring-2 focus:ring-purple-500 focus:border-transparent'
-                          }`}
+                        className={`w-full pl-12 pr-10 py-3 border rounded-xl transition-all duration-200 ${
+                          isDarkMode
+                            ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
+                            : 'bg-gray-50 border-gray-200'
+                        }`}
                         placeholder="https://example.com/your-product"
                         required={formData.resourceType === 'link'}
                       />
@@ -632,8 +675,12 @@ const AddProduct = () => {
         {/* Live Preview Section */}
         <div className="lg:w-1/3">
           <div className="sticky top-6">
-            <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
-              <h2 className="text-xl font-semibold mb-6 flex items-center gap-2">
+            <div className={`bg-white rounded-2xl shadow-lg p-6 border ${
+              isDarkMode 
+                ? 'bg-gray-800 border-gray-700' 
+                : 'bg-white border-gray-100'
+            }`}>
+              <h2 className={`text-xl font-semibold mb-6 flex items-center gap-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                 <Eye className="w-5 h-5 text-purple-500" />
                 Live Preview
               </h2>
@@ -754,8 +801,8 @@ const AddProduct = () => {
                 )}
 
                 {/* Preview Notice */}
-                <div className="mt-6 p-3 bg-gray-50 rounded-lg">
-                  <p className="text-xs text-gray-500 text-center">
+                <div className={`mt-6 p-3 rounded-lg ${isDarkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
+                  <p className={`text-xs text-center ${isDarkMode ? 'text-white' : 'text-gray-500'}`}>
                     This is a preview of how your product will appear to customers.
                   </p>
                 </div>
@@ -769,6 +816,12 @@ const AddProduct = () => {
 };
 
 export default AddProduct;
+
+
+
+
+
+
 
 
 

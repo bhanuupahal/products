@@ -1,14 +1,52 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Star, ShoppingCart, CreditCard } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Star, ShoppingCart, CreditCard, X } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
+
+const ImageModal = ({ image, onClose }) => (
+  <motion.div 
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+    onClick={onClose}
+  >
+    <motion.div 
+      initial={{ scale: 0.5 }}
+      animate={{ scale: 1 }}
+      exit={{ scale: 0.5 }}
+      className="relative w-full max-w-[95vw] max-h-[95vh]"
+      onClick={e => e.stopPropagation()} // Prevents closing when clicking the image
+    >
+      <button 
+        onClick={onClose}
+        className="absolute -top-6 -right-6 p-2 bg-white rounded-full text-gray-800 hover:bg-gray-100 shadow-lg z-50"
+      >
+        <X className="w-8 h-8" />
+      </button>
+      
+      <div className="relative w-full h-full flex items-center justify-center">
+        <img 
+          src={image} 
+          alt="Full screen view"
+          className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+          style={{
+            minHeight: '60vh',
+            minWidth: '60vw'
+          }}
+        />
+      </div>
+    </motion.div>
+  </motion.div>
+);
 
 const ProductPreview = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [isAddedToCart, setIsAddedToCart] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     // Get product from localStorage
@@ -185,12 +223,12 @@ const ProductPreview = () => {
               </div>
 
               {/* Price */}
-              <div className="mb-6 -ml-96">
+              <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center gap-2">
                 <span className="text-3xl font-bold text-blue-600">
                   ₹{product.price}
                 </span>
                 {product.originalPrice && (
-                  <span className="ml-2 text-gray-400 line-through">
+                  <span className="text-lg text-gray-400 line-through">
                     ₹{product.originalPrice}
                   </span>
                 )}
@@ -228,7 +266,10 @@ const ProductPreview = () => {
           <div className="space-y-6">
             {/* First Row */}
             <div className="flex gap-6">
-              <div className="flex-1 relative aspect-[4/3] rounded-xl overflow-hidden border-2 border-transparent hover:border-blue-300 transition-all duration-200 shadow-md">
+              <div 
+                className="flex-1 relative aspect-[4/3] rounded-xl overflow-hidden border-2 border-transparent hover:border-blue-300 transition-all duration-200 shadow-md cursor-pointer"
+                onClick={() => setSelectedImage(product.allImages[1])}
+              >
                 <img
                   src={product.allImages[1]}
                   alt="Product view 1"
@@ -237,12 +278,15 @@ const ProductPreview = () => {
                 <div className="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                   <div className="text-center">
                     <span className="text-white text-lg bg-black/60 px-6 py-2 rounded-full font-medium">
-                      View 1
+                      Click to Expand
                     </span>
                   </div>
                 </div>
               </div>
-              <div className="flex-1 relative aspect-[4/3] rounded-xl overflow-hidden border-2 border-transparent hover:border-blue-300 transition-all duration-200 shadow-md">
+              <div 
+                className="flex-1 relative aspect-[4/3] rounded-xl overflow-hidden border-2 border-transparent hover:border-blue-300 transition-all duration-200 shadow-md cursor-pointer"
+                onClick={() => setSelectedImage(product.allImages[2])}
+              >
                 <img
                   src={product.allImages[2]}
                   alt="Product view 2"
@@ -251,7 +295,7 @@ const ProductPreview = () => {
                 <div className="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                   <div className="text-center">
                     <span className="text-white text-lg bg-black/60 px-6 py-2 rounded-full font-medium">
-                      View 2
+                      Click to Expand
                     </span>
                   </div>
                 </div>
@@ -260,7 +304,10 @@ const ProductPreview = () => {
 
             {/* Second Row */}
             <div className="flex gap-6">
-              <div className="flex-1 relative aspect-[4/3] rounded-xl overflow-hidden border-2 border-transparent hover:border-blue-300 transition-all duration-200 shadow-md">
+              <div 
+                className="flex-1 relative aspect-[4/3] rounded-xl overflow-hidden border-2 border-transparent hover:border-blue-300 transition-all duration-200 shadow-md cursor-pointer"
+                onClick={() => setSelectedImage(product.allImages[3])}
+              >
                 <img
                   src={product.allImages[3]}
                   alt="Product view 3"
@@ -269,12 +316,15 @@ const ProductPreview = () => {
                 <div className="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                   <div className="text-center">
                     <span className="text-white text-lg bg-black/60 px-6 py-2 rounded-full font-medium">
-                      View 3
+                      Click to Expand
                     </span>
                   </div>
                 </div>
               </div>
-              <div className="flex-1 relative aspect-[4/3] rounded-xl overflow-hidden border-2 border-transparent hover:border-blue-300 transition-all duration-200 shadow-md">
+              <div 
+                className="flex-1 relative aspect-[4/3] rounded-xl overflow-hidden border-2 border-transparent hover:border-blue-300 transition-all duration-200 shadow-md cursor-pointer"
+                onClick={() => setSelectedImage(product.allImages[4])}
+              >
                 <img
                   src={product.allImages[4]}
                   alt="Product view 4"
@@ -283,7 +333,7 @@ const ProductPreview = () => {
                 <div className="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                   <div className="text-center">
                     <span className="text-white text-lg bg-black/60 px-6 py-2 rounded-full font-medium">
-                      View 4
+                      Click to Expand
                     </span>
                   </div>
                 </div>
@@ -292,6 +342,14 @@ const ProductPreview = () => {
           </div>
         </div>
       </div>
+      <AnimatePresence>
+        {selectedImage && (
+          <ImageModal 
+            image={selectedImage} 
+            onClose={() => setSelectedImage(null)} 
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
