@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useTheme } from '../../context/ThemeContext';
 import { 
-  Search, BookOpen, Users, Star, Clock, ChevronRight, Code, 
-  Layout, ShoppingCart, Globe, Shield, Zap, CheckCircle, 
-  Award, BookmarkPlus, Coffee
+  Search, Layout, Code, Shield, Globe, ShoppingCart, Zap, CheckCircle, Clock, Users, Star,
+  ChevronRight,
+  BookOpen
 } from 'lucide-react';
 
 const WordPressPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const { isDarkMode } = useTheme();
   
   const wordPressCourses = [
     {
@@ -107,115 +109,199 @@ const WordPressPage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      {/* Hero Section with Animated Background */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 text-white py-20 ">
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 180, 360],
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute -right-1/4 -top-1/4 w-96 h-96 bg-blue-500 rounded-full opacity-20"
-        />
-        <motion.div
-          animate={{
-            scale: [1.2, 1, 1.2],
-            rotate: [360, 180, 0],
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-          className="absolute -left-1/4 -bottom-1/4 w-96 h-96 bg-blue-400 rounded-full opacity-20"
-        />
-        
-        <div className="container mx-auto px-4 relative z-10">
+    <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'} transition-colors duration-200`}>
+      {/* Hero Section */}
+      <div className={`relative ${
+        isDarkMode 
+          ? 'bg-gradient-to-r from-gray-800 via-gray-900 to-black' 
+          : 'bg-gradient-to-r from-indigo-600 via-blue-700 to-purple-800'
+        } text-white py-16 sm:py-20 md:py-24 lg:py-32 overflow-hidden`}>
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0">
+          {/* CSS grid pattern */}
+          <div 
+            className={`absolute inset-0 ${isDarkMode ? 'opacity-30' : 'opacity-20'}`}
+            style={{
+              backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0)`,
+              backgroundSize: '40px 40px'
+            }}
+          ></div>
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center"
-          >
-            <div className="inline-block px-4 py-2 rounded-full bg-blue-500 bg-opacity-30 mb-6">
-              <span className="text-yellow-300 font-semibold">🔥 Hot & New:</span>
-              <span className="ml-2">WordPress 6.0 Features Included</span>
-            </div>
-            
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-              Become a WordPress
-              <span className="block mt-2 bg-gradient-to-r from-yellow-300 via-orange-400 to-red-500 text-transparent bg-clip-text">
-                Development Master
+            animate={{
+              rotate: [0, 360],
+              scale: [1, 1.2, 1],
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+            className={`absolute -right-1/4 -top-1/4 w-64 sm:w-72 md:w-80 lg:w-96 h-64 sm:h-72 md:h-80 lg:h-96 ${
+              isDarkMode ? 'bg-blue-900/30' : 'bg-blue-500/30'
+            } rounded-full blur-3xl`}
+          />
+          <motion.div
+            animate={{
+              rotate: [360, 0],
+              scale: [1, 1.3, 1],
+            }}
+            transition={{
+              duration: 25,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+            className={`absolute -left-1/4 -bottom-1/4 w-64 sm:w-72 md:w-80 lg:w-96 h-64 sm:h-72 md:h-80 lg:h-96 ${
+              isDarkMode ? 'bg-purple-900/30' : 'bg-purple-500/30'
+            } rounded-full blur-3xl`}
+          />
+        </div>
+
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="max-w-4xl mx-auto text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`inline-block mb-4 sm:mb-6 px-4 sm:px-6 py-1.5 sm:py-2 rounded-full ${
+                isDarkMode ? 'bg-gray-800/50' : 'bg-white/10'
+              } backdrop-blur-sm border ${isDarkMode ? 'border-gray-700' : 'border-white/20'}`}
+            >
+              <span className="text-xs sm:text-sm font-semibold">🚀 The Most Comprehensive WordPress Learning Platform</span>
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight"
+            >
+              Master
+              <span className="relative inline-block">
+                <span className={`relative z-10 px-1 sm:px-2 mx-1 sm:mx-2 ${
+                  isDarkMode 
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600' 
+                    : 'bg-gradient-to-r from-blue-400 to-purple-400'
+                } rounded-lg`}>
+                  WordPress
+                </span>
+                <motion.span
+                  className={`absolute inset-0 ${
+                    isDarkMode ? 'bg-gray-700/50' : 'bg-white/20'
+                  } rounded-lg -rotate-2`}
+                  animate={{ rotate: [2, -2, 2] }}
+                  transition={{ duration: 4, repeat: Infinity }}
+                />
               </span>
-            </h1>
-            
-            <p className="text-xl mb-8 max-w-2xl mx-auto text-blue-100">
-              Join over 50,000 students in mastering WordPress development. 
-              From basics to advanced techniques, we've got you covered.
-            </p>
+              Development
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className={`text-base sm:text-lg md:text-xl mb-8 sm:mb-10 md:mb-12 ${
+                isDarkMode ? 'text-gray-300' : 'text-blue-100'
+              } px-4`}
+            >
+              From fundamentals to advanced concepts, join over 50,000+ developers who've 
+              mastered WordPress with our industry-leading curriculum
+            </motion.p>
 
             {/* Enhanced Search Bar */}
-            <div className="max-w-xl mx-auto relative">
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                className="relative"
-              >
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="relative max-w-2xl mx-auto"
+            >
+              <div className={`absolute inset-0 ${
+                isDarkMode ? 'bg-gray-700/30' : 'bg-white/10'
+              } rounded-full blur`}></div>
+              <div className="relative flex items-center">
                 <input
                   type="text"
-                  placeholder="Search WordPress courses..."
+                  placeholder="Search WordPress courses, topics, or concepts..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full px-6 py-4 rounded-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300 shadow-lg"
+                  className={`w-full px-8 py-5 rounded-full ${
+                    isDarkMode 
+                      ? 'bg-gray-800/90 text-white placeholder-gray-400 border-gray-700' 
+                      : 'bg-white/90 text-gray-800 border-gray-200'
+                  } focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-xl pl-14 transition-colors duration-200`}
                 />
-                <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              </motion.div>
-            </div>
-          </motion.div>
+                <Search className={`absolute left-5 ${
+                  isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                } w-5 h-5`} />
+                <button className={`absolute right-3 bg-gradient-to-r ${
+                  isDarkMode 
+                    ? 'from-blue-700 to-purple-700' 
+                    : 'from-blue-600 to-purple-600'
+                } text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300`}>
+                  Search
+                </button>
+              </div>
+            </motion.div>
+
+            {/* Quick Stats */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="flex justify-center gap-8 mt-12"
+            >
+              {[
+                { label: "Active Students", value: "50K+" },
+                { label: "Video Hours", value: "1,200+" },
+                { label: "5-Star Reviews", value: "15K+" },
+              ].map((stat, index) => (
+                <div key={index} className="text-center">
+                  <div className="text-2xl font-bold">{stat.value}</div>
+                  <div className={`text-sm ${
+                    isDarkMode ? 'text-gray-400' : 'text-blue-200'
+                  }`}>{stat.label}</div>
+                </div>
+              ))}
+            </motion.div>
+          </div>
         </div>
       </div>
 
       {/* Benefits Section */}
-      <div className="py-20 bg-gradient-to-b from-white to-blue-50">
+      <div className={`py-16 ${isDarkMode ? 'bg-gray-800' : 'bg-white'} transition-colors duration-200`}>
         <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            className="text-center mb-16"
-          >
-            <span className=" font-semibold text-sm uppercase tracking-wider">Benefits</span>
-            <h2 className="text-4xl font-bold mt-2  bg-clip-text ">
-              Why Choose Our WordPress Courses?
-            </h2>
-            <div className="w-24 h-1 bg-blue-600 mx-auto mt-4 rounded-full"></div>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <h2 className={`text-3xl font-bold text-center mb-12 ${
+            isDarkMode ? 'text-gray-100' : 'text-gray-800'
+          }`}>
+            Why Choose Our WordPress Courses?
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
             {benefits.map((benefit, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                whileHover={{ scale: 1.02 }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-blue-200"
+                className={`flex items-center space-x-3 ${
+                  isDarkMode ? 'hover:bg-gray-700/50' : 'hover:bg-gray-50'
+                } p-4 rounded-lg transition-colors duration-200`}
               >
-                <div className="flex items-center space-x-4">
-                  <div className="flex-shrink-0">
-                    <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
-                      <CheckCircle className="text-blue-600 w-6 h-6" />
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-800">{benefit}</h3>
-                    <div className="h-1 w-20 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full mt-2"></div>
-                  </div>
-                </div>
+                <CheckCircle className={`${
+                  isDarkMode ? 'text-green-400' : 'text-green-500'
+                } w-6 h-6`} />
+                <span className={`${
+                  isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                }`}>{benefit}</span>
               </motion.div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Features Grid with Gradient Cards */}
-      <div className="container mx-auto px-4 py-16">
-        <h2 className="text-4xl font-bold text-center mb-12">What You'll Master</h2>
+      {/* Features Grid */}
+      <div className={`container mx-auto px-4 py-16 ${
+        isDarkMode ? 'bg-gray-900' : 'bg-white'
+      } transition-colors duration-200`}>
+        <h2 className={`text-3xl font-bold text-center mb-12 ${
+          isDarkMode ? 'text-gray-100' : 'text-gray-800'
+        }`}>What You'll Master</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
             <motion.div
@@ -224,19 +310,27 @@ const WordPressPage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               whileHover={{ y: -5 }}
               transition={{ delay: index * 0.1 }}
-              className={`bg-gradient-to-r ${feature.color} p-6 rounded-xl shadow-lg text-white`}
+              className={`bg-gradient-to-r ${feature.color} ${
+                isDarkMode ? 'opacity-90' : 'opacity-100'
+              } p-6 rounded-xl shadow-lg text-white hover:shadow-2xl transition-all duration-300`}
             >
               <div className="mb-4">{feature.icon}</div>
               <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-              <p className="text-white/90">{feature.description}</p>
+              <p className={`${
+                isDarkMode ? 'text-white/80' : 'text-white/90'
+              }`}>{feature.description}</p>
             </motion.div>
           ))}
         </div>
       </div>
 
-      {/* Enhanced Courses Section */}
-      <div className="container mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold text-center mb-12">Featured WordPress Courses</h2>
+      {/* Courses Grid */}
+      <div className={`container mx-auto px-4 py-16 ${
+        isDarkMode ? 'bg-gray-900' : 'bg-white'
+      } transition-colors duration-200`}>
+        <h2 className={`text-3xl font-bold text-center mb-12 ${
+          isDarkMode ? 'text-gray-100' : 'text-gray-800'
+        }`}>Featured WordPress Courses</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredCourses.map((course) => (
             <motion.div
@@ -244,17 +338,30 @@ const WordPressPage = () => {
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               whileHover={{ y: -5 }}
-              className="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100"
+              className={`${
+                isDarkMode 
+                  ? 'bg-gray-800 border-gray-700 hover:bg-gray-750' 
+                  : 'bg-white border-gray-100 hover:bg-gray-50'
+              } rounded-xl overflow-hidden shadow-lg border transition-all duration-300`}
             >
               <div className="relative">
-                <img src={course.image} alt={course.title} className="w-full h-48 object-cover" />
-                <div className="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm">
+                <img 
+                  src={course.image} 
+                  alt={course.title} 
+                  className="w-full h-48 object-cover"
+                />
+                <div className={`absolute top-4 right-4 ${
+                  isDarkMode ? 'bg-blue-700' : 'bg-blue-600'
+                } text-white px-3 py-1 rounded-full text-sm`}>
                   {course.category}
                 </div>
               </div>
               
               <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2">{course.title}</h3>
+                <h3 className={`text-xl font-semibold mb-2 ${
+                  isDarkMode ? 'text-gray-100' : 'text-gray-800'
+                }`}>{course.title}</h3>
+                
                 <div className="flex items-center mb-4">
                   <img 
                     src={course.instructorImage} 
@@ -262,23 +369,33 @@ const WordPressPage = () => {
                     className="w-10 h-10 rounded-full mr-3"
                   />
                   <div>
-                    <p className="text-sm font-medium">{course.instructor}</p>
-                    <p className="text-xs text-gray-500">Course Instructor</p>
+                    <p className={`text-sm font-medium ${
+                      isDarkMode ? 'text-gray-200' : 'text-gray-800'
+                    }`}>{course.instructor}</p>
+                    <p className={`text-xs ${
+                      isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                    }`}>Course Instructor</p>
                   </div>
                 </div>
-                
+
                 <div className="flex flex-wrap gap-2 mb-4">
                   {course.highlights.map((highlight, index) => (
                     <span 
                       key={index}
-                      className="bg-blue-50 text-blue-600 text-xs px-2 py-1 rounded-full"
+                      className={`${
+                        isDarkMode 
+                          ? 'bg-blue-900/50 text-blue-200' 
+                          : 'bg-blue-50 text-blue-600'
+                      } text-xs px-2 py-1 rounded-full`}
                     >
                       {highlight}
                     </span>
                   ))}
                 </div>
 
-                <div className="flex items-center justify-between text-sm text-gray-600 mb-4">
+                <div className={`flex items-center justify-between text-sm ${
+                  isDarkMode ? 'text-gray-400' : 'text-gray-600'
+                } mb-4`}>
                   <div className="flex items-center">
                     <Clock className="w-4 h-4 mr-1" />
                     {course.duration}
@@ -293,18 +410,21 @@ const WordPressPage = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl font-bold text-blue-600">
+                <div className={`mt-4 flex justify-between items-center ${
+                  isDarkMode ? 'border-t border-gray-700' : 'border-t border-gray-100'
+                } pt-4`}>
+                  <span className={`text-2xl font-bold ${
+                    isDarkMode ? 'text-gray-100' : 'text-gray-800'
+                  }`}>
                     ${course.price}
                   </span>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg flex items-center space-x-2"
-                  >
-                    <span>Enroll Now</span>
-                    <ChevronRight className="w-4 h-4" />
-                  </motion.button>
+                  <button className={`px-4 py-2 rounded-full ${
+                    isDarkMode 
+                      ? 'bg-blue-700 hover:bg-blue-600' 
+                      : 'bg-blue-600 hover:bg-blue-700'
+                  } text-white transition-colors duration-200`}>
+                    Enroll Now
+                  </button>
                 </div>
               </div>
             </motion.div>
@@ -313,7 +433,9 @@ const WordPressPage = () => {
       </div>
 
       {/* Enhanced Stats Section */}
-      <div className="bg-gradient-to-r from-blue-900 to-blue-800 text-white py-16">
+      <div className={`${
+        isDarkMode ? 'bg-gradient-to-r from-gray-800 to-gray-900' : 'bg-gradient-to-r from-blue-900 to-blue-800'
+      } text-white py-16`}>
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
@@ -338,27 +460,29 @@ const WordPressPage = () => {
       </div>
 
       {/* Testimonials Section */}
-      <div className="py-16 bg-gray-50">
+      <div className={`py-16 ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">What Our Students Say</h2>
+          <h2 className={`text-3xl font-bold text-center mb-12 ${
+            isDarkMode ? 'text-gray-100' : 'text-gray-800'
+          }`}>What Our Students Say</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                name: "Ajay",
+                name: "David Chen",
                 role: "Frontend Developer",
                 image: "https://randomuser.me/api/portraits/men/54.jpg",
                 content: "The WordPress Theme Development course transformed my career. I'm now building custom themes for clients worldwide.",
                 rating: 5
               },
               {
-                name: "Manisha",
+                name: "Lisa Anderson",
                 role: "Digital Entrepreneur",
                 image: "https://randomuser.me/api/portraits/women/76.jpg",
                 content: "Learning WooCommerce through this platform helped me launch my online store. The instructors are incredibly knowledgeable.",
                 rating: 5
               },
               {
-                name: "Sumit",
+                name: "Mark Wilson",
                 role: "Freelance Developer",
                 image: "https://randomuser.me/api/portraits/men/88.jpg",
                 content: "The advanced plugin development course is gold! It taught me everything I needed to know about WordPress plugin architecture.",
@@ -370,16 +494,24 @@ const WordPressPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-white p-6 rounded-xl shadow-lg"
+                className={`${
+                  isDarkMode ? 'bg-gray-800' : 'bg-white'
+                } p-6 rounded-xl shadow-lg`}
               >
                 <div className="flex items-center mb-4">
                   <img src={testimonial.image} alt={testimonial.name} className="w-12 h-12 rounded-full mr-4" />
                   <div>
-                    <h4 className="font-semibold">{testimonial.name}</h4>
-                    <p className="text-gray-600 text-sm">{testimonial.role}</p>
+                    <h4 className={`font-semibold ${isDarkMode ? 'text-gray-100' : 'text-gray-800'}`}>
+                      {testimonial.name}
+                    </h4>
+                    <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                      {testimonial.role}
+                    </p>
                   </div>
                 </div>
-                <p className="text-gray-700 mb-4">{testimonial.content}</p>
+                <p className={`mb-4 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                  {testimonial.content}
+                </p>
                 <div className="flex text-yellow-400">
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <Star key={i} className="w-5 h-5 fill-current" />
@@ -392,41 +524,28 @@ const WordPressPage = () => {
       </div>
 
       {/* FAQ Section */}
-      <div className="py-20 bg-gradient-to-b from-gray-50 to-white">
+      <div className={`py-16 ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
         <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            className="text-center mb-16"
-          >
-            <span className=" font-semibold text-sm uppercase tracking-wider">Got Questions?</span>
-            <h2 className="text-4xl font-bold mt-2  bg-clip-text ">
-              Frequently Asked Questions
-            </h2>
-            <div className="w-24 h-1 bg-blue-600 mx-auto mt-4 rounded-full"></div>
-          </motion.div>
-
-          <div className="max-w-3xl mx-auto space-y-6">
+          <h2 className={`text-3xl font-bold text-center mb-12 ${
+            isDarkMode ? 'text-gray-100' : 'text-gray-800'
+          }`}>Frequently Asked Questions</h2>
+          <div className="max-w-3xl mx-auto space-y-4">
             {[
               {
                 question: "Do I need prior programming experience?",
-                answer: "No prior programming experience is required for our beginner courses. However, basic computer skills and familiarity with web concepts are helpful.",
-                icon: "🚀"
+                answer: "No prior programming experience is required for our beginner courses. However, basic computer skills and familiarity with web concepts are helpful."
               },
               {
                 question: "How long do I have access to the courses?",
-                answer: "Once enrolled, you have lifetime access to the course content, including all future updates and improvements.",
-                icon: "⌛"
+                answer: "Once enrolled, you have lifetime access to the course content, including all future updates and improvements."
               },
               {
                 question: "Are the courses suitable for WordPress 6.0?",
-                answer: "Yes, all our courses are regularly updated to cover the latest WordPress versions and features, including WordPress 6.0.",
-                icon: "✨"
+                answer: "Yes, all our courses are regularly updated to cover the latest WordPress versions and features, including WordPress 6.0."
               },
               {
                 question: "Do you offer support during the course?",
-                answer: "Yes, we provide 24/7 support through our community forum, and instructors regularly host Q&A sessions.",
-                icon: "💬"
+                answer: "Yes, we provide 24/7 support through our community forum, and instructors regularly host Q&A sessions."
               }
             ].map((faq, index) => (
               <motion.div
@@ -434,54 +553,42 @@ const WordPressPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-blue-50"
+                className={`${
+                  isDarkMode ? 'bg-gray-800' : 'bg-white'
+                } rounded-lg shadow-md overflow-hidden`}
               >
                 <button
-                  className="w-full px-8 py-6 text-left font-semibold flex items-center justify-between group"
+                  className={`w-full px-6 py-4 text-left font-semibold flex justify-between items-center ${
+                    isDarkMode ? 'text-gray-100' : 'text-gray-800'
+                  }`}
                 >
-                  <div className="flex items-center space-x-4">
-                    <span className="text-2xl">{faq.icon}</span>
-                    <span className="text-lg text-gray-800 group-hover:text-blue-600 transition-colors">
-                      {faq.question}
-                    </span>
-                  </div>
-                  <ChevronRight className="w-5 h-5 transform rotate-90 text-blue-600 group-hover:rotate-[270deg] transition-transform duration-300" />
+                  <span>{faq.question}</span>
+                  <ChevronRight className="w-5 h-5 transform rotate-90" />
                 </button>
-                <div className="px-8 pb-6 text-gray-600">
-                  <div className="h-px bg-gray-100 mb-4"></div>
-                  <p className="leading-relaxed">
-                    {faq.answer}
-                  </p>
+                <div className={`px-6 pb-4 ${
+                  isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                }`}>
+                  {faq.answer}
                 </div>
               </motion.div>
             ))}
           </div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="text-center mt-12"
-          >
-            <p className="text-gray-600">
-              Still have questions?{" "}
-              <a href="#contact" className="text-blue-600 font-semibold hover:text-blue-700 transition-colors">
-                Contact our support team
-              </a>
-            </p>
-          </motion.div>
         </div>
       </div>
 
       {/* Call to Action Section */}
-      <div className="py-16 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+      <div className={`py-16 ${
+        isDarkMode 
+          ? 'bg-gradient-to-r from-gray-800 to-gray-900' 
+          : 'bg-gradient-to-r from-blue-600 to-blue-800'
+      } text-white`}>
         <div className="container mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-yellow-300 via-orange-400 to-red-500 text-transparent bg-clip-text ">Ready to Master WordPress?</h2>
+            <h2 className="text-4xl font-bold mb-6">Ready to Master WordPress?</h2>
             <p className="text-xl mb-8 text-blue-100 max-w-2xl mx-auto">
               Join thousands of successful students who have transformed their careers through our comprehensive WordPress courses.
             </p>

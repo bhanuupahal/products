@@ -20,12 +20,15 @@ const Login = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 min-h-screen flex items-center justify-center dark:bg-gray-900">
+    <div className="container mx-auto -mt-10  p-4 min-h-screen flex items-center justify-center dark:bg-gray-900">
       <div className="max-w-5xl w-full bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden flex">
         {/* Left side - Image */}
-        <div className="hidden md:block w-1/2 bg-cover bg-center" style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1616763355603-9755a640a287?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80')`
-        }}>
+        <div 
+          className="hidden md:block w-1/2 bg-cover bg-center" 
+          style={{
+            backgroundImage: "url('https://images.unsplash.com/photo-1616763355603-9755a640a287?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80')"
+          }}
+        >
           <div className="h-full w-full bg-blue-900 bg-opacity-40 backdrop-blur-sm flex items-center">
             <div className="text-white p-8">
               <h2 className="text-4xl font-bold mb-4">Welcome Back!</h2>
@@ -76,14 +79,35 @@ const Login = () => {
             </div>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  id="remember"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                />
-                <label htmlFor="remember" className="ml-2 block text-sm text-gray-900">
+                <div className="relative">
+                  <input
+                    type="checkbox"
+                    id="remember"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="appearance-none h-4 w-4 bg-white border border-gray-300 rounded cursor-pointer
+                      checked:bg-blue-600 checked:border-blue-600
+                      focus:ring-2 focus:ring-blue-500 focus:ring-offset-0
+                      dark:bg-gray-700 dark:border-gray-600 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-blue-600"
+                  />
+                  <svg
+                    className={`absolute left-[2px] top-[4px] h-3 w-3 text-white pointer-events-none ${
+                      rememberMe ? 'block' : 'hidden'
+                    }`}
+                    viewBox="0 0 12 12"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M10 3L4.5 8.5L2 6"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+                <label htmlFor="remember" className="ml-2 block text-sm text-gray-900 dark:text-gray-200 cursor-pointer">
                   Remember me
                 </label>
               </div>
@@ -114,4 +138,3 @@ const Login = () => {
 };
 
 export default Login;
-

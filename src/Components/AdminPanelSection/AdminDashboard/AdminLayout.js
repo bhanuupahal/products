@@ -13,9 +13,12 @@ import {
   Menu,
   FolderPlus,
   ShoppingBag,
-  Settings
+  Settings,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { useTheme } from '../../../context/ThemeContext';
+import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 
 const AdminLayout = () => {
@@ -23,7 +26,7 @@ const AdminLayout = () => {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { isDarkMode } = useTheme();
+  const { isDarkMode, toggleTheme } = useTheme();
 
   const menuItems = [
     {
@@ -86,24 +89,59 @@ const AdminLayout = () => {
 
   return (
     <div className={`min-h-screen ${isDarkMode ? 'bg-gray-800' : 'bg-gray-50'} transition-colors duration-300`}>
-      {/* Mobile Header */}
-      <div className={`fixed top-0 left-0 right-0 ${
+      {/* Header - Made Responsive */}
+      <header className={`fixed top-0 left-0 right-0 ${
         isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
-      } z-40 border-b md:hidden`}>
-        <div className="flex items-center justify-between px-4 h-16">
-          <button
-            onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
-            className={`p-2 ${
-              isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-100'
-            } rounded-lg`}
-          >
-            <Menu size={24} className={isDarkMode ? 'text-white' : 'text-gray-800'} />
-          </button>
-          <h1 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
-            Admin Panel
-          </h1>
+      } z-40 border-b transition-colors duration-300`}>
+        <div className="flex items-center justify-between px-4 h-16 md:h-20">
+          {/* Left Section */}
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
+              className={`p-2 md:hidden ${
+                isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-100'
+              } rounded-lg transition-colors`}
+            >
+              <Menu size={24} className={isDarkMode ? 'text-white' : 'text-gray-800'} />
+            </button>
+            <div className="flex items-center space-x-3">
+              <Package className="h-6 w-6 md:h-8 md:w-8 text-blue-500" />
+              <h1 className={`text-lg md:text-xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+                Admin Panel
+              </h1>
+            </div>
+          </div>
+
+          {/* Right Section */}
+          <div className="flex items-center space-x-3">
+            {/* Theme Toggle Button */}
+            <button
+              onClick={toggleTheme}
+              className={`p-2 rounded-full ${
+                isDarkMode 
+                  ? 'bg-gray-700 text-yellow-300 hover:bg-gray-600' 
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              } transition-colors duration-200`}
+              aria-label="Toggle theme"
+            >
+              {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
+
+            {/* Additional Header Actions */}
+            <div className="hidden md:flex items-center space-x-3">
+              <button
+                className={`px-4 py-2 rounded-lg ${
+                  isDarkMode 
+                    ? 'bg-gray-700 text-white hover:bg-gray-600' 
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                } transition-colors`}
+              >
+                <Settings size={20} />
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+      </header>
 
       <div className="flex">
         {/* Sidebar */}
@@ -195,7 +233,7 @@ const AdminLayout = () => {
         <main 
           className={`flex-1 transition-all duration-300 ease-in-out
             ${isCollapsed ? 'md:ml-20' : 'md:ml-64'} 
-            w-full p-6 mt-16 md:mt-0`}
+            w-full p-6 mt-16 md:mt-20`}
         >
           <Outlet />
         </main>

@@ -3,13 +3,14 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Star, ShoppingCart, CreditCard, X } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
+import { useTheme } from '../../context/ThemeContext';
 
-const ImageModal = ({ image, onClose }) => (
+const ImageModal = ({ image, onClose, isDarkMode }) => (
   <motion.div 
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
-    className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+    className={`fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 ${!isDarkMode && '!bg-white/90'}`}
     onClick={onClose}
   >
     <motion.div 
@@ -21,7 +22,7 @@ const ImageModal = ({ image, onClose }) => (
     >
       <button 
         onClick={onClose}
-        className="absolute -top-6 -right-6 p-2 bg-white rounded-full text-gray-800 hover:bg-gray-100 shadow-lg z-50"
+        className={`absolute -top-6 -right-6 p-2 bg-white rounded-full text-gray-800 hover:bg-gray-100 shadow-lg z-50 ${!isDarkMode && '!bg-white !text-gray-800 !hover:bg-gray-100'}`}
       >
         <X className="w-8 h-8" />
       </button>
@@ -42,6 +43,7 @@ const ImageModal = ({ image, onClose }) => (
 );
 
 const ProductPreview = () => {
+  const { isDarkMode } = useTheme();
   const navigate = useNavigate();
   const { id } = useParams();
   const [product, setProduct] = useState(null);
@@ -64,13 +66,16 @@ const ProductPreview = () => {
         'https://placehold.co/600x400/21759b/FFFFFF/png?text=Additional+5',
       ];
       setProduct(foundProduct);
+      
+      // For debugging
+      console.log('Product data loaded:', foundProduct);
     }
   }, [id]);
 
   if (!product) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center text-gray-600">Loading...</div>
+      <div className={`container mx-auto px-4 py-8 ${isDarkMode ? 'text-gray-200' : 'text-gray-600'}`}>
+        <div className="text-center">Loading...</div>
       </div>
     );
   }
@@ -105,6 +110,10 @@ const ProductPreview = () => {
     // Save updated cart
     localStorage.setItem('cart', JSON.stringify(existingCart));
     
+    
+    console.log('Cart item added:', cartItem);
+    console.log('Cart updated:', existingCart);
+
     // Show success notification
     toast.success('Course added to cart!', {
       icon: '🛒',
@@ -136,13 +145,16 @@ const ProductPreview = () => {
     // Replace any existing items with this single item
     localStorage.setItem('cart', JSON.stringify([cartItem]));
     
+    // For debugging
+    console.log('Navigating to checkout');
+    
     // Navigate directly to checkout
     navigate('/checkout');
   };
 
   return (
-    <div className="container mx-auto p-4 dark:bg-gray-900">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+    <div className={`container mx-auto p-4 ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'} transition-colors duration-200`}>
+      <div className={`${isDarkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-lg p-6`}>
         {/* Add Toaster component */}
         <Toaster position="top-right" />
         
@@ -163,24 +175,24 @@ const ProductPreview = () => {
             </motion.div>
 
             {/* Description - Directly under main image */}
-            <div className="bg-gray-50 rounded-lg p-6 mb-6">
-              <h2 className="text-2xl font-semibold mb-4 text-gray-800">Description</h2>
-              <p className="text-gray-600 leading-relaxed whitespace-pre-line text-base">
+            <div className={`rounded-lg p-6 mb-6 ${isDarkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
+              <h2 className={`text-2xl font-semibold mb-4 ${isDarkMode ? 'text-gray-100' : 'text-gray-800'}`}>Description</h2>
+              <p className={`leading-relaxed whitespace-pre-line text-base ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                 {product.description}
               </p>
             </div>
           </div>
 
           {/* Right Column - Rest of the content remains the same */}
-          <div className="md:w-1/2 p-6 bg-white">
+          <div className={`md:w-1/2 p-6 ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
             <div className="sticky top-24">
-              <h1 className="text-3xl font-bold text-gray-800 mb-4">
+              <h1 className={`text-3xl font-bold mb-4 ${isDarkMode ? 'text-gray-100' : 'text-gray-800'}`}>
                 {product.name || product.title}
               </h1>
               
               {/* Category Badge */}
               <div className="mb-4">
-                <span className="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">
+                <span className={`${isDarkMode ? 'bg-blue-900 text-blue-100' : 'bg-blue-100 text-blue-800'} text-sm font-medium px-3 py-1 rounded-full`}>
                   {product.category || 'Course'}
                 </span>
               </div>
@@ -193,28 +205,30 @@ const ProductPreview = () => {
                     className={`w-5 h-5 ${
                       star <= (product.rating || 4) 
                         ? 'text-yellow-400 fill-current' 
-                        : 'text-gray-300'
+                        : isDarkMode ? 'text-gray-600' : 'text-gray-300'
                     }`}
                   />
                 ))}
-                <span className="ml-2 text-gray-600">({product.rating || 4.0})</span>
+                <span className={`ml-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                  ({product.rating || 4.0})
+                </span>
               </div>
 
               {/* Included Features */}
               <div className="mb-6 space-y-2">
-                <div className="flex items-center gap-2 text-gray-600">
+                <div className={`flex items-center gap-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                   <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                   </svg>
                   <span>Included: Quality checked by Envato</span>
                 </div>
-                <div className="flex items-center gap-2 text-gray-600">
+                <div className={`flex items-center gap-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                   <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                   </svg>
                   <span>Included: Future updates</span>
                 </div>
-                <div className="flex items-center gap-2 text-gray-600">
+                <div className={`flex items-center gap-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                   <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                   </svg>
@@ -224,11 +238,11 @@ const ProductPreview = () => {
 
               {/* Price */}
               <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center gap-2">
-                <span className="text-3xl font-bold text-blue-600">
+                <span className={`text-3xl font-bold ${isDarkMode ? 'text-blue-400' : 'text-blue-600'}`}>
                   ₹{product.price}
                 </span>
                 {product.originalPrice && (
-                  <span className="text-lg text-gray-400 line-through">
+                  <span className={`text-lg ${isDarkMode ? 'text-gray-500' : 'text-gray-400'} line-through`}>
                     ₹{product.originalPrice}
                   </span>
                 )}
@@ -240,7 +254,9 @@ const ProductPreview = () => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={handleAddToCart}
-                  className="flex-1 py-3 px-6 rounded-lg flex items-center justify-center gap-2 text-white font-semibold bg-blue-600 hover:bg-blue-700"
+                  className={`flex-1 py-3 px-6 rounded-lg flex items-center justify-center gap-2 text-white font-semibold ${
+                    isDarkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-600 hover:bg-blue-700'
+                  }`}
                 >
                   <ShoppingCart className="w-5 h-5" />
                   Add to Cart
@@ -250,7 +266,9 @@ const ProductPreview = () => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={handleBuyNow}
-                  className="flex-1 py-3 px-6 rounded-lg flex items-center justify-center gap-2 text-white font-semibold bg-green-600 hover:bg-green-700"
+                  className={`flex-1 py-3 px-6 rounded-lg flex items-center justify-center gap-2 text-white font-semibold ${
+                    isDarkMode ? 'bg-green-600 hover:bg-green-700' : 'bg-green-600 hover:bg-green-700'
+                  }`}
                 >
                   <CreditCard className="w-5 h-5" />
                   Buy Now
@@ -261,13 +279,17 @@ const ProductPreview = () => {
         </div>
 
         {/* Additional Images Section - Full Width */}
-        <div className="p-6 bg-gray-50 border-t border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Additional Views</h3>
+        <div className={`p-6 ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-100'} border-t`}>
+          <h3 className={`text-lg font-semibold mb-4 ${isDarkMode ? 'text-gray-100' : 'text-gray-800'}`}>
+            Additional Views
+          </h3>
           <div className="space-y-6">
             {/* First Row */}
             <div className="flex gap-6">
               <div 
-                className="flex-1 relative aspect-[4/3] rounded-xl overflow-hidden border-2 border-transparent hover:border-blue-300 transition-all duration-200 shadow-md cursor-pointer"
+                className={`flex-1 relative aspect-[4/3] rounded-xl overflow-hidden border-2 border-transparent ${
+                  isDarkMode ? 'hover:border-blue-500' : 'hover:border-blue-300'
+                } transition-all duration-200 shadow-md cursor-pointer`}
                 onClick={() => setSelectedImage(product.allImages[1])}
               >
                 <img
@@ -277,14 +299,16 @@ const ProductPreview = () => {
                 />
                 <div className="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                   <div className="text-center">
-                    <span className="text-white text-lg bg-black/60 px-6 py-2 rounded-full font-medium">
+                    <span className={`text-white text-lg ${isDarkMode ? 'bg-black/80' : 'bg-black/60'} px-6 py-2 rounded-full font-medium`}>
                       Click to Expand
                     </span>
                   </div>
                 </div>
               </div>
               <div 
-                className="flex-1 relative aspect-[4/3] rounded-xl overflow-hidden border-2 border-transparent hover:border-blue-300 transition-all duration-200 shadow-md cursor-pointer"
+                className={`flex-1 relative aspect-[4/3] rounded-xl overflow-hidden border-2 border-transparent ${
+                  isDarkMode ? 'hover:border-blue-500' : 'hover:border-blue-300'
+                } transition-all duration-200 shadow-md cursor-pointer`}
                 onClick={() => setSelectedImage(product.allImages[2])}
               >
                 <img
@@ -294,7 +318,7 @@ const ProductPreview = () => {
                 />
                 <div className="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                   <div className="text-center">
-                    <span className="text-white text-lg bg-black/60 px-6 py-2 rounded-full font-medium">
+                    <span className={`text-white text-lg ${isDarkMode ? 'bg-black/80' : 'bg-black/60'} px-6 py-2 rounded-full font-medium`}>
                       Click to Expand
                     </span>
                   </div>
@@ -305,7 +329,9 @@ const ProductPreview = () => {
             {/* Second Row */}
             <div className="flex gap-6">
               <div 
-                className="flex-1 relative aspect-[4/3] rounded-xl overflow-hidden border-2 border-transparent hover:border-blue-300 transition-all duration-200 shadow-md cursor-pointer"
+                className={`flex-1 relative aspect-[4/3] rounded-xl overflow-hidden border-2 border-transparent ${
+                  isDarkMode ? 'hover:border-blue-500' : 'hover:border-blue-300'
+                } transition-all duration-200 shadow-md cursor-pointer`}
                 onClick={() => setSelectedImage(product.allImages[3])}
               >
                 <img
@@ -315,14 +341,16 @@ const ProductPreview = () => {
                 />
                 <div className="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                   <div className="text-center">
-                    <span className="text-white text-lg bg-black/60 px-6 py-2 rounded-full font-medium">
+                    <span className={`text-white text-lg ${isDarkMode ? 'bg-black/80' : 'bg-black/60'} px-6 py-2 rounded-full font-medium`}>
                       Click to Expand
                     </span>
                   </div>
                 </div>
               </div>
               <div 
-                className="flex-1 relative aspect-[4/3] rounded-xl overflow-hidden border-2 border-transparent hover:border-blue-300 transition-all duration-200 shadow-md cursor-pointer"
+                className={`flex-1 relative aspect-[4/3] rounded-xl overflow-hidden border-2 border-transparent ${
+                  isDarkMode ? 'hover:border-blue-500' : 'hover:border-blue-300'
+                } transition-all duration-200 shadow-md cursor-pointer`}
                 onClick={() => setSelectedImage(product.allImages[4])}
               >
                 <img
@@ -332,7 +360,7 @@ const ProductPreview = () => {
                 />
                 <div className="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                   <div className="text-center">
-                    <span className="text-white text-lg bg-black/60 px-6 py-2 rounded-full font-medium">
+                    <span className={`text-white text-lg ${isDarkMode ? 'bg-black/80' : 'bg-black/60'} px-6 py-2 rounded-full font-medium`}>
                       Click to Expand
                     </span>
                   </div>
@@ -347,6 +375,7 @@ const ProductPreview = () => {
           <ImageModal 
             image={selectedImage} 
             onClose={() => setSelectedImage(null)} 
+            isDarkMode={isDarkMode}
           />
         )}
       </AnimatePresence>

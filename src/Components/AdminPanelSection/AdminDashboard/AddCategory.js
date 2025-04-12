@@ -62,8 +62,8 @@ const AddCategory = () => {
 
   return (
     <div className="p-6">
-      <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-8 text-white shadow-lg mb-8">
-        <h1 className="text-3xl font-bold">Category Management</h1>
+      <div className=" rounded-2xl p-8 text-white shadow-lg mb-8">
+        <h1 className="text-3xl bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent font-bold">Category Management</h1>
         <p className="text-white/80 mt-2">Add and manage your product categories</p>
       </div>
 

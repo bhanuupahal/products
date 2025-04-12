@@ -1,64 +1,68 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { ChevronRight, Play, Users, Clock, Star, BookOpen, Award, TrendingUp } from 'lucide-react';
-import { useTheme } from '../../context/ThemeContext';
 import ProductCard from './ProductCard';
 import { useNavigate } from 'react-router-dom';
+import CountUp from 'react-countup';
+import Loader from '../LoaderSection/Loader';
+import { useTheme } from '../../context/ThemeContext';
 
 const Home = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
   const { isDarkMode } = useTheme();
-
+  
+  // Add popularProducts state
   const [popularProducts] = useState([
     {
       id: 1,
-      title: "WordPress Theme Development",
-      description: "Master WordPress theme development from scratch. Learn PHP, WordPress hooks, custom post types, and theme customization.",
-      thumbnail: "https://placehold.co/600x400/21759b/FFFFFF/png?text=WordPress",
-      price: 49.99,  // Will be converted to ₹4,149
-      originalPrice: 199.99,  // Will be converted to ₹16,599
-      rating: 4.8,
-      duration: "20h",
-      students: 15000,
-      // badge: "Bestseller",
+      title: "Complete Web Development Bootcamp",
+      description: "Master full-stack web development with this comprehensive bootcamp covering HTML, CSS, JavaScript, React, and Node.js.",
+      thumbnail: "https://placehold.co/600x400/3498db/FFFFFF/png?text=Web+Dev",
+      price: 79.99,
+      originalPrice: 199.99,
+      rating: 4.9,
+      duration: "40h",
+      students: 35000,
+      badge: "Bestseller",
       techStack: [
-        { name: "WordPress", icon: "https://placehold.co/30x30/21759b/FFFFFF/png?text=WP" },
-        { name: "PHP", icon: "https://placehold.co/30x30/777BB3/FFFFFF/png?text=PHP" },
-        { name: "MySQL", icon: "https://placehold.co/30x30/4479A1/FFFFFF/png?text=SQL" }
+        { name: "React", icon: "https://placehold.co/30x30/61DAFB/000000/png?text=R" },
+        { name: "Node.js", icon: "https://placehold.co/30x30/339933/FFFFFF/png?text=NJ" },
+        { name: "JavaScript", icon: "https://placehold.co/30x30/F7DF1E/000000/png?text=JS" }
       ]
     },
     {
       id: 2,
-      title: "PHP & MySQL Development",
-      description: "Complete PHP programming course with MySQL database integration. Build dynamic web applications from ground up.",
-      thumbnail: "https://placehold.co/600x400/777BB3/FFFFFF/png?text=PHP+Course",
-      price: 59.99,
-      originalPrice: 149.99,
-      rating: 4.7,
-      duration: "25h",
-      students: 12000,
-      // badge: "New",
+      title: "Python Programming Masterclass",
+      description: "Learn Python from scratch and advance to professional level with practical projects and real-world applications.",
+      thumbnail: "https://placehold.co/600x400/FFD43B/000000/png?text=Python",
+      price: 69.99,
+      originalPrice: 169.99,
+      rating: 4.8,
+      duration: "35h",
+      students: 28000,
+      badge: "Popular",
       techStack: [
-        { name: "PHP", icon: "https://placehold.co/30x30/777BB3/FFFFFF/png?text=PHP" },
-        { name: "MySQL", icon: "https://placehold.co/30x30/4479A1/FFFFFF/png?text=SQL" },
-        { name: "Laravel", icon: "https://placehold.co/30x30/FF2D20/FFFFFF/png?text=LV" }
+        { name: "Python", icon: "https://placehold.co/30x30/FFD43B/000000/png?text=PY" },
+        { name: "Django", icon: "https://placehold.co/30x30/092E20/FFFFFF/png?text=DJ" },
+        { name: "Flask", icon: "https://placehold.co/30x30/000000/FFFFFF/png?text=FL" }
       ]
     },
     {
       id: 3,
-      title: "Mobile App Development",
-      description: "Learn to build cross-platform mobile apps using React Native and Flutter. Deploy to iOS and Android.",
-      thumbnail: "https://placehold.co/600x400/61DAFB/000000/png?text=Mobile+Dev",
-      price: 79.99,
-      originalPrice: 299.99,
-      rating: 4.9,
-      duration: "40h",
-      students: 8000,
-      // badge: "Popular",
+      title: "Data Science Fundamentals",
+      description: "Master data analysis, visualization, and machine learning with Python, Pandas, and scikit-learn.",
+      thumbnail: "https://placehold.co/600x400/9B59B6/FFFFFF/png?text=Data+Science",
+      price: 89.99,
+      originalPrice: 199.99,
+      rating: 4.7,
+      duration: "45h",
+      students: 22000,
+      badge: "Trending",
       techStack: [
-        { name: "React Native", icon: "https://placehold.co/30x30/61DAFB/000000/png?text=RN" },
-        { name: "Flutter", icon: "https://placehold.co/30x30/02569B/FFFFFF/png?text=FL" },
-        { name: "Firebase", icon: "https://placehold.co/30x30/FFCA28/000000/png?text=FB" }
+        { name: "Pandas", icon: "https://placehold.co/30x30/150458/FFFFFF/png?text=PD" },
+        { name: "NumPy", icon: "https://placehold.co/30x30/013243/FFFFFF/png?text=NP" },
+        { name: "Scikit", icon: "https://placehold.co/30x30/F7931E/FFFFFF/png?text=SK" }
       ]
     }
   ]);
@@ -74,7 +78,7 @@ const Home = () => {
       rating: 4.6,
       duration: "15h",
       students: 20000,
-      // badge: "Hot",
+      badge: "Hot",
       techStack: [
         { name: "HTML5", icon: "https://placehold.co/30x30/E34F26/FFFFFF/png?text=H5" },
         { name: "CSS3", icon: "https://placehold.co/30x30/1572B6/FFFFFF/png?text=CSS" },
@@ -91,7 +95,7 @@ const Home = () => {
       rating: 4.8,
       duration: "25h",
       students: 11000,
-      // badge: "Advanced",
+      badge: "Advanced",
       techStack: [
         { name: "JavaScript", icon: "https://placehold.co/30x30/F7DF1E/000000/png?text=JS" },
         { name: "TypeScript", icon: "https://placehold.co/30x30/3178C6/FFFFFF/png?text=TS" },
@@ -108,7 +112,7 @@ const Home = () => {
       rating: 4.7,
       duration: "18h",
       students: 9000,
-      // badge: "Featured",
+      badge: "Featured",
       techStack: [
         { name: "WordPress", icon: "https://placehold.co/30x30/21759b/FFFFFF/png?text=WP" },
         { name: "PHP", icon: "https://placehold.co/30x30/777BB3/FFFFFF/png?text=PHP" },
@@ -136,21 +140,45 @@ const Home = () => {
     }
   ];
 
+  const statsRef = useRef(null);
+  const isInView = useInView(statsRef, { 
+    once: true, 
+    threshold: 0.2,
+    triggerOnce: false,
+    rootMargin: '-50px'
+  });
+
+  useEffect(() => {
+    // Simulate loading time
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
   return (
-    <div className="container mx-auto px-4">
-      {/* Added pt-20 md:pt-24 to account for fixed navbar height */}
-      <div className="pt-20 md:pt-24">
-        {/* Enhanced Hero Section */}
-        <div className={`
-          relative overflow-hidden mb-12 py-24 rounded-3xl
-          ${isDarkMode 
-            ? 'bg-gray-800 text-white' // Dark bg and white text in dark mode
-            : 'bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white'
-          }
-          transition-colors duration-200
-        `}>
-          {/* Animated Background Patterns */}
-          <div className="absolute inset-0 opacity-10">
+    <div className="min-h-screen bg-transparent transition-colors duration-200">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+        {/* Hero Section */}
+        <div className={`relative overflow-hidden mb-8 sm:mb-12 ${
+          isDarkMode 
+            ? 'bg-gradient-to-r from-gray-800 via-gray-900 to-black' 
+            : 'bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600'
+        } text-white py-12 sm:py-16 lg:py-24 rounded-2xl sm:rounded-3xl transition-colors duration-300`}>
+          {/* Background Patterns */}
+          <div className="absolute inset-0">
+            <div 
+              className={`absolute inset-0 ${isDarkMode ? 'opacity-30' : 'opacity-10'}`}
+              style={{
+                backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0)`,
+                backgroundSize: '40px 40px'
+              }}
+            ></div>
             <motion.div
               animate={{
                 rotate: [0, 360],
@@ -161,34 +189,16 @@ const Home = () => {
                 repeat: Infinity,
                 ease: "linear"
               }}
-              className={`absolute transform -right-20 -top-20 w-96 h-96 rounded-full
-                ${isDarkMode ? 'bg-gray-900' : 'bg-white'}
-              `}
-            />
-            <motion.div
-              animate={{
-                rotate: [360, 0],
-                scale: [1, 1.3, 1],
-              }}
-              transition={{
-                duration: 25,
-                repeat: Infinity,
-                ease: "linear"
-              }}
-              className={`absolute -left-20 -bottom-20 w-96 h-96 rounded-full
-                ${isDarkMode ? 'bg-gray-900' : 'bg-white'}
-              `}
+              className={`absolute transform -right-20 -top-20 w-96 h-96 ${
+                isDarkMode ? 'bg-gray-700' : 'bg-white'
+              } rounded-full opacity-10`}
             />
           </div>
 
-          {/* Animated Gradient Overlay */}
-          <div className={`absolute inset-0 
-            ${isDarkMode 
-              ? 'bg-gradient-to-b from-transparent via-gray-100/20 to-gray-200/30' 
-              : 'bg-gradient-to-b from-transparent via-purple-600/20 to-blue-900/30'
-            }
-          `} />
+          {/* Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-600/20 to-blue-900/30 dark:from-transparent dark:via-purple-800/20 dark:to-blue-900/40" />
 
+          {/* Content Container */}
           <div className="relative z-10 container mx-auto px-4">
             <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
               {/* Left Content */}
@@ -196,31 +206,23 @@ const Home = () => {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className={`inline-block px-4 py-2 rounded-full backdrop-blur-lg mb-6
-                    ${isDarkMode 
-                      ? 'bg-gray-700 text-white' 
-                      : 'bg-white/10 text-white'
-                    }
-                  `}
+                  className="inline-block px-4 py-2 rounded-full bg-white/10 dark:bg-white/5 backdrop-blur-lg mb-6"
                 >
-                  <span className={`font-semibold ${isDarkMode ? 'text-blue-400' : 'text-yellow-300'}`}>
-                    🎉 New:
-                  </span>
-                  <span className="ml-2">Advanced TypeScript Course Launch</span>
+                  <span className="text-yellow-300 dark:text-yellow-200 font-semibold">🎉 New:</span>
+                  <span className="ml-2 dark:text-gray-200">Advanced TypeScript Course Launch</span>
                 </motion.div>
 
                 <motion.h1 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="text-5xl lg:text-6xl font-bold mb-6 leading-tight"
+                  className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 leading-tight"
                 >
                   Master Modern
-                  <span className={`block mt-2 bg-clip-text text-transparent
-                    ${isDarkMode 
-                      ? 'bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400' 
-                      : 'bg-gradient-to-r from-yellow-300 via-pink-300 to-yellow-300'
-                    }
-                  `}>
+                  <span className={`block mt-2 bg-gradient-to-r ${
+                    isDarkMode
+                      ? 'from-blue-400 via-purple-400 to-pink-400'
+                      : 'from-yellow-300 via-pink-300 to-yellow-300'
+                  } text-transparent bg-clip-text`}>
                     Web Development
                   </span>
                 </motion.h1>
@@ -229,94 +231,96 @@ const Home = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
-                  className={`text-xl mb-8 leading-relaxed
-                    ${isDarkMode ? 'text-gray-300' : 'text-gray-100'}
-                  `}
+                  className={`text-base sm:text-lg lg:text-xl mb-6 sm:mb-8 ${
+                    isDarkMode ? 'text-gray-300' : 'text-gray-100'
+                  } leading-relaxed max-w-2xl mx-auto lg:mx-0`}
                 >
                   Join our comprehensive learning platform and transform your career. 
                   Get hands-on experience with real-world projects and learn from industry experts.
                 </motion.p>
 
-                {/* CTA Buttons */}
-                <div className="flex flex-wrap gap-4 mb-12">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => navigate('/register')}
-                    className={`px-8 py-4 rounded-full font-semibold flex items-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300
-                      ${isDarkMode 
-                        ? 'bg-blue-500 text-white hover:bg-blue-600' 
-                        : 'bg-white text-purple-600'
-                      }
-                    `}
-                  >
-                    Start Learning Now
-                    <ChevronRight className="w-5 h-5" />
-                  </motion.button>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className={`px-8 py-4 rounded-full font-semibold flex items-center gap-2 transition-all duration-300
-                      ${isDarkMode 
-                        ? 'border-2 border-gray-300 text-white hover:bg-gray-700' 
-                        : 'border-2 border-white text-white hover:bg-white/10'
-                      }
-                    `}
-                  >
-                    Watch Demo
-                    <Play className="w-5 h-5" />
-                  </motion.button>
-                </div>
+                {/* Call to Action Buttons */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+                >
+                  <button className={`px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base ${
+                    isDarkMode
+                      ? 'bg-blue-500 hover:bg-blue-600'
+                      : 'bg-white text-blue-600 hover:bg-gray-100'
+                  } font-semibold transition-colors duration-200 w-full sm:w-auto`}>
+                    Get Started
+                  </button>
+                  <button className={`px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base ${
+                    isDarkMode
+                      ? 'bg-gray-800 hover:bg-gray-700'
+                      : 'bg-blue-100 hover:bg-blue-200 text-blue-600'
+                  } font-semibold transition-colors duration-200 w-full sm:w-auto`}>
+                    Learn More
+                  </button>
+                </motion.div>
 
                 {/* Stats Section */}
-                <div className="grid grid-cols-3 gap-8">
+                <div ref={statsRef} className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8 sm:mt-12">
                   {[
-                    { icon: <Users className="w-6 h-6" />, number: "50K+", label: "Students" },
-                    { icon: <Clock className="w-6 h-6" />, number: "100+", label: "Courses" },
-                    { icon: <Star className="w-6 h-6" />, number: "4.8", label: "Rating" }
+                    { number: 50000, suffix: "+", label: "Students", icon: <Users className="w-4 h-4 sm:w-5 sm:h-5" /> },
+                    { number: 100, suffix: "+", label: "Courses", icon: <BookOpen className="w-4 h-4 sm:w-5 sm:h-5" /> },
+                    { number: 4.8, decimals: 1, label: "Rating", icon: <Star className="w-4 h-4 sm:w-5 sm:h-5" /> }
                   ].map((stat, index) => (
                     <motion.div
                       key={index}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.4 + (index * 0.1) }}
-                      className="text-center text-white"
+                      className="bg-white/10 backdrop-blur-lg rounded-xl p-3 sm:p-4 text-center flex flex-col items-center justify-center"
                     >
-                      <div className={`mb-2 inline-flex justify-center items-center w-12 h-12 rounded-full
-                        ${isDarkMode 
-                          ? 'bg-gray-700 text-blue-400' 
-                          : 'bg-white/10 text-white'
-                        }
-                      `}>
-                        {stat.icon}
-                      </div>
-                      <div className="text-2xl font-bold">{stat.number}</div>
-                      <div className={`text-sm
-                        ${isDarkMode ? 'text-gray-300' : 'text-gray-200'}
-                      `}>
-                        {stat.label}
-                      </div>
+                      <div className="mb-2">{stat.icon}</div>
+                      <h3 className="text-xl sm:text-2xl font-bold">
+                        <CountUp
+                          start={0}
+                          end={stat.number}
+                          duration={2.5}
+                          separator=","
+                          decimals={stat.decimals || 0}
+                          suffix={stat.suffix || ""}
+                          useEasing={true}
+                          enableScrollSpy={true}
+                          scrollSpyDelay={200}
+                          scrollSpyOnce={false}
+                        >
+                          {({ countUpRef }) => (
+                            <span ref={countUpRef} />
+                          )}
+                        </CountUp>
+                      </h3>
+                      <p className="text-xs sm:text-sm text-gray-200">{stat.label}</p>
                     </motion.div>
                   ))}
                 </div>
               </div>
 
-              {/* Right Content - Interactive Tech Stack */}
+              {/* Right Content - Tech Stack */}
               <motion.div 
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4 }}
-                className="lg:w-1/2 relative"
+                className="w-full lg:w-1/2"
               >
-                <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-xl">
-                  <div className="grid grid-cols-3 gap-6">
+                <div className={`${
+                  isDarkMode
+                    ? 'bg-gray-800/30'
+                    : 'bg-white/10'
+                } backdrop-blur-lg rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 shadow-xl`}>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
                     {[
                       { name: 'React', icon: '/images/react.png', delay: 0, color: '#61DAFB' },
                       { name: 'Node.js', icon: '/images/nodejs.webp', delay: 0.2, color: '#339933' },
                       { name: 'MongoDB', icon: '/images/mongodb.png', delay: 0.4, color: '#47A248' },
                       { name: 'JavaScript', icon: '/images/javascript.png', delay: 0.6, color: '#F7DF1E' },
                       { name: 'TypeScript', icon: '/images/typescript.webp', delay: 0.8, color: '#3178C6' },
-                      { name: 'Python', icon: '/images/python.webp', delay: 1, color: '#3776AB' }
+                      { name: 'Python', icon: '/images/python.png', delay: 1, color: '#3776AB' }
                     ].map((tech, index) => (
                       <motion.div
                         key={tech.name}
@@ -324,92 +328,20 @@ const Home = () => {
                         animate={{ opacity: 1, y: 0 }}
                         whileHover={{ scale: 1.05, y: -5 }}
                         transition={{ delay: tech.delay }}
-                        className="flex flex-col items-center p-4 bg-white/5 rounded-xl hover:bg-white/20 transition-all duration-300"
+                        className="flex flex-col items-center p-2 sm:p-4 bg-white/5 dark:bg-gray-700/50 rounded-lg sm:rounded-xl hover:bg-white/20 dark:hover:bg-gray-600/50 transition-all duration-300"
                       >
-                        <div className="w-16 h-16 mb-4 relative">
+                        <div className="w-8 h-8 sm:w-12 sm:h-12 lg:w-16 lg:h-16 mb-2 sm:mb-4 relative">
                           <img 
                             src={tech.icon} 
                             alt={tech.name} 
                             className="w-full h-full object-contain"
                           />
-                          <motion.div
-                            className="absolute inset-0 rounded-full"
-                            animate={{
-                              boxShadow: [
-                                `0 0 0 0px ${tech.color}20`,
-                                `0 0 0 10px ${tech.color}00`
-                              ]
-                            }}
-                            transition={{
-                              duration: 1.5,
-                              repeat: Infinity,
-                              ease: "easeOut"
-                            }}
-                          />
                         </div>
-                        <span className="font-medium">{tech.name}</span>
+                        <span className="text-xs sm:text-sm font-medium dark:text-gray-200">{tech.name}</span>
                       </motion.div>
                     ))}
                   </div>
-
-                  {/* Feature Carousel */}
-                  <div className="mt-8">
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={activeFeature}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        className="text-center p-4"
-                      >
-                        {features[activeFeature].icon}
-                        <h3 className="text-xl font-semibold mt-2">
-                          {features[activeFeature].title}
-                        </h3>
-                        <p className="text-gray-300 mt-1">
-                          {features[activeFeature].description}
-                        </p>
-                      </motion.div>
-                    </AnimatePresence>
-                    <div className="flex justify-center gap-2 mt-4">
-                      {features.map((_, index) => (
-                        <button
-                          key={index}
-                          onClick={() => setActiveFeature(index)}
-                          className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                            index === activeFeature ? 'bg-white w-6' : 'bg-white/50'
-                          }`}
-                        />
-                      ))}
-                    </div>
-                  </div>
                 </div>
-
-                {/* Floating Elements */}
-                <motion.div
-                  animate={{ 
-                    y: [0, -15, 0],
-                    rotate: [0, 5, 0]
-                  }}
-                  transition={{ 
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                  className="absolute -top-8 -right-8 w-24 h-24 bg-gradient-to-r from-yellow-300/20 to-pink-300/20 rounded-full backdrop-blur-lg"
-                />
-                <motion.div
-                  animate={{ 
-                    y: [0, 15, 0],
-                    rotate: [0, -5, 0]
-                  }}
-                  transition={{ 
-                    duration: 5,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                  className="absolute -bottom-8 -left-8 w-20 h-20 bg-gradient-to-r from-blue-300/20 to-purple-300/20 rounded-full backdrop-blur-lg"
-                />
               </motion.div>
             </div>
           </div>
@@ -456,7 +388,3 @@ const Home = () => {
 };
 
 export default Home;
-
-
-
-

@@ -29,9 +29,24 @@ const Navbar = () => {
   const [cartItemsCount, setCartItemsCount] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [mobileCategoryDropdown, setMobileCategoryDropdown] = useState(false);
+  const [dropdownTimer, setDropdownTimer] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { isDarkMode, toggleTheme } = useTheme();
+
+  const handleMouseLeave = () => {
+    const timer = setTimeout(() => {
+      setCategoryDropdownOpen(false);
+    }, 500); // 500ms delay before closing
+    setDropdownTimer(timer);
+  };
+
+  const handleMouseEnter = () => {
+    if (dropdownTimer) {
+      clearTimeout(dropdownTimer);
+      setDropdownTimer(null);
+    }
+  };
 
   // Check login status when component mounts and when localStorage changes
   useEffect(() => {
@@ -117,11 +132,11 @@ const Navbar = () => {
             className="flex items-center py-2"
           >
             <Link to="/" className="flex items-center">
-              <img 
-                src="/images/mainlogo.png" 
-                alt="Company Logo" 
-                className="h-14 w-auto sm:h-16 md:h-20 object-contain"
-              />
+              <h1 className={`text-2xl md:text-3xl font-bold tracking-wider ${
+                isDarkMode ? 'text-white' : 'text-gray-800'
+              }`}>
+                MEHAR<span className="text-blue-500">e</span>TECH
+              </h1>
             </Link>
           </motion.div>
 
@@ -142,24 +157,34 @@ const Navbar = () => {
             {/* Desktop Categories Dropdown */}
             <div 
               className="relative"
-              onMouseEnter={() => setCategoryDropdownOpen(true)}
-              onMouseLeave={() => setCategoryDropdownOpen(false)}
+              onMouseLeave={handleMouseLeave}
+              onMouseEnter={handleMouseEnter}
             >
-              <button className="text-gray-700 dark:text-white hover:text-gray-900 dark:hover:text-gray-200 px-2 py-2 text-sm xl:text-base xl:px-3 rounded-md inline-flex items-center">
+              <button 
+                onClick={() => setCategoryDropdownOpen(!isCategoryDropdownOpen)}
+                className="text-gray-700 dark:text-white hover:text-gray-900 dark:hover:text-gray-200 px-2 py-2 text-sm xl:text-base xl:px-3 rounded-md inline-flex items-center"
+              >
                 <span>Categories</span>
-                <ChevronDown className={`ml-1 h-4 w-4 xl:h-5 xl:w-5 transform transition-transform duration-600 ${isCategoryDropdownOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown 
+                  className={`ml-1 h-4 w-4 xl:h-5 xl:w-5 transform transition-transform duration-300 ${
+                    isCategoryDropdownOpen ? 'rotate-180' : ''
+                  }`} 
+                />
               </button>
 
               {isCategoryDropdownOpen && (
-                <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 bg-white rounded-xl shadow-lg py-4 z-50 border border-gray-100" 
-                     style={{ width: 'max-content', minWidth: '600px' }}>
+                <div 
+                  className="absolute left-0 mt-2 bg-white dark:bg-gray-800 rounded-xl shadow-lg py-4 z-50 border border-gray-100 dark:border-gray-700" 
+                  style={{ width: 'max-content', minWidth: '600px' }}
+                >
                   <div className="px-4">
                     <div className="flex items-center space-x-6">
                       {categories.map((category, index) => (
                         <Link
                           key={index}
                           to={category.route}
-                          className="flex items-center hover:text-blue-600 transition-colors duration-200"
+                          className="flex items-center text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
+                          onClick={() => setCategoryDropdownOpen(false)}
                         >
                           <span className="text-xl mr-2">{category.icon}</span>
                           <span className="font-medium whitespace-nowrap">
