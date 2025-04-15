@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useTheme } from '../../../context/ThemeContext';
 import { 
   X, 
   ImageIcon, 
@@ -7,15 +6,15 @@ import {
   Sparkles, 
   FolderIcon, 
   ChevronDown,
+  DollarSign,
+  Link as LinkIcon,  // Note: We're already using LinkIcon instead of Link
+  FileText,
   Upload,
   Eye,
-  FileText,
-  Link as LinkIcon,
-  DollarSign
+  Gift
 } from 'lucide-react';
 
 const AddProduct = () => {
-  const { isDarkMode } = useTheme();
   const [formData, setFormData] = useState({
     name: '',
     thumbnailImage: null,
@@ -26,7 +25,8 @@ const AddProduct = () => {
     productFile: null,
     resourceType: 'file', // Add this for resource type
     productLink: '', // Add this for product link
-    category: '' // Add this line
+    category: '',
+    priceType: 'free' // Add this for price type
   });
 
   const [imagePreview, setImagePreview] = useState(null);
@@ -178,7 +178,7 @@ const AddProduct = () => {
             <div key={index} className="relative group aspect-square">
               <img
                 src={preview.url}
-                alt={`Product ${index + 1} `}
+                alt={`Product ${index + 1}`}
                 className="w-full h-full object-cover rounded-lg"
               />
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center">
@@ -211,16 +211,16 @@ const AddProduct = () => {
 
  
   return (
-    <div className={`max-w-7xl mx-auto p-6 ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
+    <div className="max-w-7xl mx-auto p-6">
       {/* Enhanced Header Section */}
       <div className="mb-8">
-        <div className=" rounded-2xl p-8 text-white shadow-lg">
+        <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-8 text-white shadow-lg">
           <div className="flex items-center gap-6">
-            {/* <div className="p-4 bg-white/20 backdrop-blur-lg rounded-xl">
+            <div className="p-4 bg-white/20 backdrop-blur-lg rounded-xl">
               <Package className="w-10 h-10 text-white" />
-            </div> */}
-            <div> 
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">Create New Product</h1>
+            </div>
+            <div>
+              <h1 className="text-4xl font-bold">Create New Product</h1>
               <p className="text-white/80 mt-2 text-lg">
                 Craft an amazing product experience for your customers
               </p>
@@ -234,27 +234,19 @@ const AddProduct = () => {
         <div className="flex-grow lg:w-2/3">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Basic Information Card */}
-            <div className={`rounded-2xl shadow-lg p-8 border ${
-              isDarkMode 
-                ? 'bg-gray-800 border-gray-700 text-white' 
-                : 'bg-white border-gray-200 text-gray-800'
-            }`}>
+            <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
               <div className="flex items-center gap-3 mb-8">
                 <div className="p-3 bg-blue-100 rounded-xl">
                   <Sparkles className="w-6 h-6 text-blue-600" />
                 </div>
-                <h2 className={`text-2xl font-semibold ${
-                  isDarkMode ? 'text-white' : 'text-gray-800'
-                }`}>
+                <h2 className="text-2xl font-semibold text-gray-800">
                   Basic Information
                 </h2>
               </div>
 
               {/* Product Name Input */}
               <div className="mb-8">
-                <label className={`block text-sm font-medium mb-2 ${
-                  isDarkMode ? 'text-gray-200' : 'text-gray-700'
-                }`}>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Product Name
                 </label>
                 <input
@@ -262,11 +254,7 @@ const AddProduct = () => {
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className={`w-full px-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
-                    isDarkMode 
-                      ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
-                      : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-500'
-                  }`}
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   placeholder="Enter product name"
                   required
                 />
@@ -274,21 +262,17 @@ const AddProduct = () => {
 
               {/* Category Dropdown Selection */}
               <div className="mb-8">
-                <label className={`block text-sm font-medium mb-2 flex items-center gap-2 ${
-                  isDarkMode ? 'text-gray-200' : 'text-gray-700'
-                }`}>
-                  <FolderIcon className={`w-5 h-5 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`} />
+                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                  <FolderIcon className="w-5 h-5 text-gray-600" />
                   Choose Category
                 </label>
                 <div className="relative">
                   <select
                     value={formData.category}
                     onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
-                    className={`w-full px-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none transition-all duration-200 ${
-                      isDarkMode 
-                        ? 'bg-gray-700 border-gray-600 text-gray-500' 
-                        : 'bg-gray-50 border-gray-200 text-gray-500'
-                    }`}
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl 
+                      focus:ring-2 focus:ring-blue-500 focus:border-transparent 
+                      appearance-none transition-all duration-200"
                     required
                   >
                     <option value="">Select a category</option>
@@ -299,16 +283,14 @@ const AddProduct = () => {
                     ))}
                   </select>
                   <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
-                    <ChevronDown className={`w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`} />
+                    <ChevronDown className="w-5 h-5 text-gray-400" />
                   </div>
                 </div>
               </div>
 
               {/* Enhanced Description Input */}
               <div className="mb-8">
-                <label className={`block text-sm font-medium mb-2 ${
-                  isDarkMode ? 'text-gray-200' : 'text-gray-700'
-                }`}>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Product Description
                 </label>
                 <textarea
@@ -316,11 +298,7 @@ const AddProduct = () => {
                   value={formData.productInfo}
                   onChange={handleInputChange}
                   rows="4"
-                  className={`w-full px-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
-                    isDarkMode 
-                      ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
-                      : 'bg-white border-gray-200 text-gray-700 placeholder-gray-400'
-                  }`}
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   placeholder="Describe your product in detail..."
                   required
                 />
@@ -328,7 +306,7 @@ const AddProduct = () => {
 
               {/* Enhanced Image Upload Section */}
               <div className="mb-8">
-                <label className="block text-sm font-medium text-gray mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-4">
                   Product Images
                 </label>
                 <div className="space-y-4">
@@ -355,7 +333,7 @@ const AddProduct = () => {
                             className="mx-auto max-h-48 object-contain rounded-lg"
                           />
                           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center">
-                            <p className="text-gray-500">Click to change image</p>
+                            <p className="text-white">Click to change image</p>
                           </div>
                         </div>
                       ) : (
@@ -363,8 +341,8 @@ const AddProduct = () => {
                           <div className="mb-3 p-4 bg-blue-100 rounded-full">
                             <ImageIcon className="w-8 h-8 text-blue-500" />
                           </div>
-                          <p className="text-white font-medium">Drop your main image here</p>
-                          <p className="text-sm text-white mt-1">or click to browse</p>
+                          <p className="text-gray-700 font-medium">Drop your main image here</p>
+                          <p className="text-sm text-gray-500 mt-1">or click to browse</p>
                         </div>
                       )}
                     </label>
@@ -373,11 +351,11 @@ const AddProduct = () => {
                   {/* Additional Images Section */}
                   <div className="mt-6">
                     <div className="flex items-center justify-between mb-3">
-                      <label className="block text-sm font-medium text-white flex items-center gap-2">
+                      <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
                         <ImageIcon className="w-4 h-4" />
                         Additional Images
                       </label>
-                      <span className="text-xs text-white">
+                      <span className="text-xs text-gray-500">
                         {additionalImagePreviews.length}/5 images
                       </span>
                     </div>
@@ -404,8 +382,8 @@ const AddProduct = () => {
                           <div className="mb-3 p-3 bg-blue-100 rounded-full">
                             <ImageIcon className="w-6 h-6 text-blue-500" />
                           </div>
-                          <span className="text-white font-medium">Add more product images</span>
-                          <span className="text-sm text-white mt-1">Up to 5 images</span>
+                          <span className="text-gray-700 font-medium">Add more product images</span>
+                          <span className="text-sm text-gray-500 mt-1">Up to 5 images</span>
                         </div>
                       </label>
                     </div>
@@ -443,57 +421,75 @@ const AddProduct = () => {
             {/* Additional Images Section */}
 
             {/* Pricing & Resources Card */}
-            <div className={`rounded-2xl shadow-lg p-8 border ${
-              isDarkMode 
-                ? 'bg-gray-800 border-gray-700' 
-                : 'bg-white border-gray-100'
-            }`}>
+            <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
               <div className="flex items-center gap-3 mb-8">
                 <div className="p-3 bg-green-100 rounded-xl">
                   <DollarSign className="w-6 h-6 text-green-600" />
                 </div>
-                <h2 className={`text-2xl font-semibold ${
-                  isDarkMode ? 'text-white' : 'text-gray-800'
-                }`}>
+                <h2 className="text-2xl font-semibold text-gray-800">
                   Pricing & Resources
                 </h2>
               </div>
 
-              {/* Price Input */}
-              <div className="mb-8">
-                <label className={`block text-sm font-medium mb-2 ${
-                  isDarkMode ? 'text-gray-200' : 'text-gray-700'
-                }`}>
-                  Price (in ₹)
+              {/* Price Type Selection */}
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Price Type
                 </label>
-                <div className="relative">
-                  <div className={`absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none ${
-                    isDarkMode ? 'text-gray-400' : 'text-gray-500'
-                  }`}>
-                    <span className="font-medium">₹</span>
-                  </div>
-                  <input
-                    type="number"
-                    name="price"
-                    value={formData.price}
-                    onChange={handleInputChange}
-                    className={`w-full pl-12 pr-4 py-3 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 ${
-                      isDarkMode 
-                        ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
-                        : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-500'
-                    }`}
-                    placeholder="1999"
-                    required
-                    min="0"
-                  />
+                <div className="flex gap-2">
+                  {['paid', 'free'].map((type) => (
+                    <button
+                      key={type}
+                      type="button"
+                      onClick={() => setFormData(prev => ({
+                        ...prev,
+                        priceType: type,
+                        ...(type === 'free' ? { price: 0 } : {})
+                      }))}
+                      className={`px-3 py-2 rounded-lg border transition-all duration-200 flex items-center gap-1.5
+                        ${formData.priceType === type
+                          ? 'border-green-500 bg-green-50'
+                          : 'border-gray-200 hover:border-green-200'
+                        }`}
+                    >
+                      {type === 'paid' ? (
+                        <DollarSign className={`w-4 h-4 ${formData.priceType === type ? 'text-green-500' : 'text-gray-400'}`} />
+                      ) : (
+                        <Gift className={`w-4 h-4 ${formData.priceType === type ? 'text-green-500' : 'text-gray-400'}`} />
+                      )}
+                      <span className="font-medium capitalize text-sm">{type}</span>
+                    </button>
+                  ))}
                 </div>
               </div>
 
-              {/* Tutorial Link Input */}
+              {/* Price Input - Only shown when paid is selected */}
+              {formData.priceType === 'paid' && (
+                <div className="mb-8">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Price (in ₹)
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <span className="text-gray-500 font-medium">₹</span>
+                    </div>
+                    <input
+                      type="number"
+                      name="price"
+                      value={formData.price}
+                      onChange={handleInputChange}
+                      className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                      placeholder="1999"
+                      required
+                      min="0"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Tutorial Link Input */
               <div className="mb-8">
-                <label className={`block text-sm font-medium mb-2 ${
-                  isDarkMode ? 'text-gray-200' : 'text-gray-700'
-                }`}>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Tutorial Link
                 </label>
                 <div className="relative">
@@ -502,26 +498,19 @@ const AddProduct = () => {
                     name="productLink"
                     value={formData.productLink}
                     onChange={handleInputChange}
-                    className={`w-full pl-12 pr-4 py-3 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 ${
-                      isDarkMode 
-                        ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
-                        : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-500'
-                    }`}
-                    placeholder="https://example.com/tutorial"
+                    className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                    placeholder=""
                   />
-                  <div className={`absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none ${
-                    isDarkMode ? 'text-gray-400' : 'text-gray-500'
-                  }`}>
-                    <LinkIcon className="w-6 h-6" />
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <LinkIcon className="w-6 h-6 text-gray-400" />
+                    <span className="text-gray-500 font-medium">Link</span>
                   </div>
                 </div>
-              </div>
+              </div>}
 
               {/* Resource Type Selection */}
               <div className="mb-8">
-                <label className={`block text-sm font-medium mb-2 ${
-                  isDarkMode ? 'text-gray-200' : 'text-gray-700'
-                }`}>
+                <label className="block text-sm font-medium text-gray-700 mb-4">
                   Resource Type
                 </label>
                 <div className="grid grid-cols-2 gap-4">
@@ -534,35 +523,19 @@ const AddProduct = () => {
                         resourceType: type,
                         ...(type === 'file' ? { productLink: '' } : { productFile: null })
                       }))}
-                      className={`p-4 rounded-xl border-2 transition-all duration-300 ${
-                        formData.resourceType === type
-                          ? isDarkMode 
-                            ? 'border-purple-500 bg-gray-700 text-white' 
-                            : 'border-purple-500 bg-purple-50'
-                          : isDarkMode 
-                            ? 'border-gray-700 hover:border-purple-500/50 bg-gray-700 text-gray-300' 
-                            : 'border-gray-200 hover:border-purple-500/50'
-                      }`}
+                      className={`p-4 rounded-xl border-2 transition-all duration-300
+                        ${formData.resourceType === type
+                          ? 'border-purple-500 bg-purple-50'
+                          : 'border-gray-200 hover:border-purple-200'
+                        }`}
                     >
                       <div className="flex flex-col items-center gap-2">
                         {type === 'file' ? (
-                          <FileText className={`w-6 h-6 ${
-                            formData.resourceType === type 
-                              ? 'text-purple-500' 
-                              : isDarkMode ? 'text-gray-400' : 'text-gray-400'
-                          }`} />
+                          <FileText className={`w-6 h-6 ${formData.resourceType === type ? 'text-purple-500' : 'text-gray-400'}`} />
                         ) : (
-                          <LinkIcon className={`w-6 h-6 ${
-                            formData.resourceType === type 
-                              ? 'text-purple-500' 
-                              : isDarkMode ? 'text-gray-400' : 'text-gray-400'
-                          }`} />
+                          <LinkIcon className={`w-6 h-6 ${formData.resourceType === type ? 'text-purple-500' : 'text-gray-400'}`} />
                         )}
-                        <span className={`font-medium capitalize ${
-                          isDarkMode ? 'text-white' : ''
-                        }`}>
-                          {type}
-                        </span>
+                        <span className="font-medium capitalize">{type}</span>
                       </div>
                     </button>
                   ))}
@@ -572,19 +545,15 @@ const AddProduct = () => {
               {/* Resource Input */}
               {formData.resourceType === 'file' ? (
                 <div className="mb-8">
-                  <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-white' : 'text-gray-700'}`}>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Upload Product File
                   </label>
                   <div 
-                    className={`border-2 border-dashed rounded-xl transition-all duration-300 ${
-                      formData.productFile 
-                        ? isDarkMode 
-                          ? 'border-blue-400 bg-gray-700' 
-                          : 'border-blue-200 bg-blue-50/50'
-                        : isDarkMode 
-                          ? 'border-gray-700 hover:border-blue-400 bg-gray-800' 
-                          : 'border-gray-200 hover:border-blue-200 hover:bg-blue-50/20'
-                    }`}
+                    className={`border-2 border-dashed rounded-xl transition-all duration-300 
+                      ${formData.productFile 
+                        ? 'border-blue-200 bg-blue-50/50' 
+                        : 'border-gray-200 hover:border-blue-200 hover:bg-blue-50/20'
+                      }`}
                   >
                     <input
                       type="file"
@@ -595,11 +564,7 @@ const AddProduct = () => {
                     />
                     {formData.productFile ? (
                       <div className="p-4">
-                        <div className={`flex items-center justify-between p-3 rounded-lg shadow-sm border ${
-                          isDarkMode 
-                            ? 'bg-gray-700 border-gray-600' 
-                            : 'bg-white border-blue-100'
-                        }`}>
+                        <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm border border-blue-100">
                           <div className="flex items-center">
                             <div className="p-2 bg-blue-50 rounded-lg mr-3">
                               <FileText className="w-6 h-6 text-blue-500" />
@@ -626,18 +591,14 @@ const AddProduct = () => {
                     ) : (
                       <label htmlFor="productFile" className="cursor-pointer block p-6">
                         <div className="flex flex-col items-center">
-                          <div className={`mb-3 p-4 rounded-full ${isDarkMode ? 'bg-gray-700' : 'bg-blue-100'}`}>
+                          <div className="mb-3 p-4 bg-blue-100 rounded-full">
                             <Upload className="w-8 h-8 text-blue-500" />
                           </div>
                           <span className="text-gray-700 font-medium">Drop your file here</span>
                           <span className="text-sm text-gray-500 mt-1">or click to browse</span>
                           <div className="mt-4 flex items-center gap-4">
                             {['ZIP', 'RAR', 'PDF'].map((format) => (
-                              <span key={format} className={`px-3 py-1 rounded-full text-xs ${
-                                isDarkMode 
-                                  ? 'bg-gray-700 text-white' 
-                                  : 'bg-gray-100 text-gray-600'
-                              }`}>
+                              <span key={format} className="px-3 py-1 bg-gray-100 rounded-full text-xs text-gray-600">
                                 {format}
                               </span>
                             ))}
@@ -650,7 +611,7 @@ const AddProduct = () => {
                 </div>
               ) : (
                 <div className="mb-8">
-                  <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-white' : 'text-gray-700'}`}>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Product Link
                   </label>
                   <div className="space-y-2">
@@ -663,11 +624,11 @@ const AddProduct = () => {
                         name="productLink"
                         value={formData.productLink}
                         onChange={handleInputChange}
-                        className={`w-full pl-12 pr-10 py-3 border rounded-xl transition-all duration-200 ${
-                          isDarkMode
-                            ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
-                            : 'bg-gray-50 border-gray-200'
-                        }`}
+                        className={`w-full pl-12 pr-10 py-3 border rounded-xl transition-all duration-200
+                          ${formData.productLink 
+                            ? 'bg-blue-50/50 border-blue-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent' 
+                            : 'bg-gray-50 border-gray-200 focus:ring-2 focus:ring-purple-500 focus:border-transparent'
+                          }`}
                         placeholder="https://example.com/your-product"
                         required={formData.resourceType === 'link'}
                       />
@@ -706,89 +667,133 @@ const AddProduct = () => {
         {/* Live Preview Section */}
         <div className="lg:w-1/3">
           <div className="sticky top-6">
-            <div className={`rounded-2xl shadow-lg p-6 border ${
-              isDarkMode 
-                ? 'bg-gray-800 border-gray-700' 
-                : 'bg-white border-gray-100'
-            }`}>
-              <h2 className={`text-xl font-semibold mb-6 flex items-center gap-2 ${
-                isDarkMode ? 'text-white' : 'text-gray-900'
-              }`}>
-                <Eye className={`w-5 h-5 ${isDarkMode ? 'text-purple-400' : 'text-purple-500'}`} />
+            <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+              <h2 className="text-xl font-semibold mb-6 flex items-center gap-2">
+                <Eye className="w-5 h-5 text-purple-500" />
                 Live Preview
               </h2>
-
-              {/* Preview Content */}
-              <div className={`space-y-4 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
-                {/* Product Title */}
-                <h3 className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                  {formData.name || 'Product Title'}
-                </h3>
-
-                {/* Product Image */}
-                <div className={`aspect-video rounded-lg overflow-hidden ${
-                  isDarkMode ? 'bg-gray-700' : 'bg-gray-100'
-                }`}>
+              
+              {/* Images Section */}
+              <div className="mb-6">
+                {/* Main Thumbnail */}
+                <div className="rounded-xl overflow-hidden border border-gray-200 mb-4">
                   {imagePreview ? (
                     <img
                       src={imagePreview}
                       alt="Product preview"
-                      className="w-full h-full object-cover"
+                      className="w-full h-48 object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <ImageIcon className={`w-8 h-8 ${isDarkMode ? 'text-gray-600' : 'text-gray-400'}`} />
+                    <div className="w-full h-48 bg-gray-100 flex items-center justify-center">
+                      <ImageIcon className="w-8 h-8 text-gray-400" />
                     </div>
                   )}
                 </div>
 
-                {/* Price */}
-                <div className="flex items-center gap-2">
-                  <span className={`text-xl font-bold ${
-                    isDarkMode ? 'text-green-400' : 'text-green-600'
-                  }`}>
-                    ₹{formData.price || '0'}
-                  </span>
-                </div>
-
-                {/* Description */}
-                <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                  {formData.productInfo || 'Product description will appear here...'}
-                </p>
-
-                {/* Resource Type */}
-                <div className={`flex items-center gap-2 text-sm ${
-                  isDarkMode ? 'text-gray-300' : 'text-gray-600'
-                }`}>
-                  <span className="flex items-center gap-1">
-                    {formData.resourceType === 'file' ? (
-                      <FileText className="w-4 h-4" />
-                    ) : (
-                      <LinkIcon className="w-4 h-4" />
-                    )}
-                    {formData.resourceType === 'file' ? 'Downloadable File' : 'Online Tutorial'}
-                  </span>
-                </div>
-
-                {/* Additional Images */}
+                {/* Additional Images - Horizontal Scroll */}
                 {additionalImagePreviews.length > 0 && (
-                  <div className="grid grid-cols-4 gap-2">
-                    {additionalImagePreviews.map((preview, index) => (
-                      <div
-                        key={index}
-                        className={`aspect-square rounded-lg overflow-hidden ${
-                          isDarkMode ? 'bg-gray-700' : 'bg-gray-100'
-                        }`}
-                      >
-                        <img
-                          src={preview.url}
-                          alt={`Additional ${index + 1}`}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    ))}
+                  <div className="mt-2">
+                    <div className="flex gap-2 overflow-x-auto pb-2">
+                      {additionalImagePreviews.map((preview, index) => (
+                        <div 
+                          key={index} 
+                          className="relative flex-none w-24 h-24 group"
+                        >
+                          <img
+                            src={preview.url}
+                            alt={`Preview ${index + 1}`}
+                            className="w-full h-full object-cover rounded-lg border border-gray-200"
+                          />
+                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center">
+                            <span className="text-white text-xs px-2 py-1 bg-black/60 rounded-full">
+                              {(preview.file.size / (1024 * 1024)).toFixed(1)} MB
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
+              </div>
+
+              {/* Product Details Preview */}
+              <div className="space-y-4">
+                {/* Title */}
+                <h3 className="text-xl font-semibold text-gray-800">
+                  {formData.name || 'Product Name'}
+                </h3>
+
+                {/* Category */}
+                {formData.category && (
+                  <div className="flex items-center gap-2">
+                    <FolderIcon className="w-4 h-4 text-gray-500" />
+                    <span className="text-sm text-gray-600">
+                      {categories.find(cat => cat.id === formData.category)?.name || formData.category}
+                    </span>
+                  </div>
+                )}
+
+                {/* Price */}
+                {formData.price && (
+                  <div className="flex items-center gap-2">
+                    <DollarSign className="w-4 h-4 text-green-500" />
+                    <span className="text-2xl font-bold text-green-600">
+                      ₹{parseFloat(formData.price).toLocaleString('en-IN')}
+                    </span>
+                  </div>
+                )}
+
+                {/* Description */}
+                {formData.productInfo && (
+                  <div className="mt-4">
+                    <h4 className="text-sm font-medium text-gray-700 mb-2">Description</h4>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      {formData.productInfo}
+                    </p>
+                  </div>
+                )}
+
+                {/* Resources Preview */}
+                {(formData.tutorialLink || formData.productFile || formData.productLink) && (
+                  <div className="mt-6">
+                    <h4 className="text-sm font-medium text-gray-700 mb-2">Resources</h4>
+                    <div className="space-y-2">
+                      {formData.tutorialLink && (
+                        <div className="flex items-center gap-2 text-sm">
+                          <LinkIcon className="w-4 h-4 text-blue-500" />
+                          <a href={formData.tutorialLink} target="_blank" rel="noopener noreferrer" 
+                             className="text-blue-500 hover:underline truncate">
+                            Tutorial Link
+                          </a>
+                        </div>
+                      )}
+                      {formData.productFile && (
+                        <div className="flex items-center gap-2 text-sm">
+                          <FileText className="w-4 h-4 text-purple-500" />
+                          <span className="text-purple-500 truncate">
+                            {formData.productFile.name}
+                          </span>
+                        </div>
+                      )}
+                      {formData.productLink && (
+                        <div className="flex items-center gap-2 text-sm">
+                          <LinkIcon className="w-4 h-4 text-gray-500" />
+                          <a href={formData.productLink} target="_blank" rel="noopener noreferrer" 
+                             className="text-gray-600 hover:underline truncate">
+                            Product Link
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Preview Notice */}
+                <div className="mt-6 p-3 bg-gray-50 rounded-lg">
+                  <p className="text-xs text-gray-500 text-center">
+                    This is a preview of how your product will appear to customers.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
