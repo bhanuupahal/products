@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Mail, Globe } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 
 const Disclaimer = () => {
   const { isDarkMode } = useTheme();
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to top when component mounts
+  }, []);
 
   return (
     <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'} py-8 sm:py-16 px-4 sm:px-6 lg:px-8 transition-colors duration-200`}>

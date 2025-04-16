@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Mail, Phone, Globe } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 
 const RefundPolicy = () => {
   const { isDarkMode } = useTheme();
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to top when component mounts
+  }, []);
 
   return (
     <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
